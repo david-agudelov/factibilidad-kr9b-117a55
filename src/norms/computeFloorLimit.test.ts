@@ -1,0 +1,84 @@
+import { describe, expect, it } from 'vitest'
+import { DEFAULT_PARAMS } from '../model/caseDefaults'
+import { SITE_CONSTANTS } from '../model/projectSource'
+import {
+  computeFloorLimit,
+  computeNormativeEnvelope,
+  normativeRearSetback,
+} from './computeFloorLimit'
+
+describe('normativeRearSetback', () => {
+  it('uses 4, 5, and 6 meter rear setbacks by total height band from the PDF', () => {
+    expect(normativeRearSetback(12)).toBe(4)
+    expect(normativeRearSetback(12.01)).toBe(5)
+    expect(normativeRearSetback(18)).toBe(5)
+    expect(normativeRearSetback(18.01)).toBe(6)
+    expect(normativeRearSetback(27)).toBe(6)
+  })
+})
+
+describe('computeFloorLimit', () => {
+  it('starts the floor slider at 2 and finds a preliminary default maximum', () => {
+    const limit = computeFloorLimit(DEFAULT_PARAMS)
+
+    expect(limit.minFloors).toBe(2)
+    expect(limit.maxFloors).toBe(9)
+    expect(limit.limitingFactors).toContain('Altura normativa preliminar')
+  })
+
+  it('reduces the maximum when floor height increases', () => {
+    const limit = computeFloorLimit({ ...DEFAULT_PARAMS, floorHeight: 3.5 })
+
+    expect(limit.maxFloors).toBe(7)
+    expect(limit.limitingFactors).toContain('Altura normativa preliminar')
+  })
+
+  it('can be limited by effective construction index before height', () => {
+    const limit = computeFloorLimit(DEFAULT_PARAMS, { iceIndex: 3 })
+
+    expect(limit.maxFloors).toBe(3)
+    expect(limit.limitingFactors).toContain('ICe maximo')
+  })
+
+  it('uses ECOS lateral onset when ECOS mode is enabled', () => {
+    const base = computeFloorLimit({ ...DEFAULT_PARAMS, floors: 8, ecosMode: false })
+    const ecos = computeFloorLimit({ ...DEFAULT_PARAMS, floors: 8, ecosMode: true })
+
+    expect(ecos.lateralOnsetHeight).toBe(15.7)
+    expect(ecos.maxEffectiveAreaBeforeLimit).toBeGreaterThan(
+      base.maxEffectiveAreaBeforeLimit,
+    )
+  })
+})
+
+describe('computeNormativeEnvelope', () => {
+  it('derives total height from floors and floor height', () => {
+    const envelope = computeNormativeEnvelope({
+      ...DEFAULT_PARAMS,
+      floors: 6,
+      floorHeight: 3.2,
+    })
+
+    expect(envelope.totalHeight).toBe(19.2)
+    expect(envelope.rearSetback).toBe(6)
+  })
+
+  it('uses the PDF source values for ICe and site data', () => {
+    const envelope = computeNormativeEnvelope(DEFAULT_PARAMS)
+
+    expect(SITE_CONSTANTS.source.document).toContain('factibilidad_KR9B_117A55.pdf')
+    expect(SITE_CONSTANTS.area).toBe(326.184)
+    expect(SITE_CONSTANTS.iceIndex).toBe(5)
+    expect(envelope.iceLimit).toBe(1630.92)
+  })
+
+  it('keeps sellable efficiency as a metric assumption, not a geometry input', () => {
+    const envelope = computeNormativeEnvelope({
+      ...DEFAULT_PARAMS,
+      sellableEfficiency: 0.65,
+    })
+
+    expect(envelope.sellableEfficiency).toBe(0.65)
+    expect(envelope.lateralOnsetHeight).toBe(11.4)
+  })
+})

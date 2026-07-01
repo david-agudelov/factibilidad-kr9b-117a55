@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "warning": "Capas Google solo para referencia visual interna/local. No publicar ni usar como fuente normativa, catastral o topografica.",
+  "capture_layers": [
+    {
+      "id": "google_base",
+      "label": "Google base / referencia visual",
+      "category": "base",
+      "image": "google_maps_santa_barbara_reference.png",
+      "bounds": "google_maps_santa_barbara_reference.bounds.json",
+      "color": "#202124",
+      "z_index": 250,
+      "default_visible": true,
+      "scale_status": "escala base ajustada manualmente",
+      "description": "Captura Google Maps norte-arriba usada como lamina de referencia interna."
+    },
+    {
+      "id": "google_comercios_capture",
+      "label": "Google comercios / pins visibles",
+      "category": "comercio_gastronomia",
+      "image": "google_maps_santa_barbara_comercios.png",
+      "bounds": "google_maps_santa_barbara_comercios.bounds.json",
+      "color": "#f28e2b",
+      "z_index": 330,
+      "default_visible": true,
+      "scale_status": "escala alineada",
+      "description": "Captura Google Maps con busqueda de comercios/pins visibles para referencia interna."
+    }
+  ]
+}

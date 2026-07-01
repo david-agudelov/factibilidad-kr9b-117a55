@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Norma facil - KR 9B #117A-55</title>
+    <style>
+      :root {
+        color: #14202b;
+        background: #eef3f8;
+        font-family:
+          Inter,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 32px 18px 48px;
+      }
+      section {
+        margin-bottom: 22px;
+        border: 1px solid #d8e0e7;
+        border-radius: 8px;
+        background: #fffdf8;
+        padding: 22px;
+      }
+      h1,
+      h2 {
+        margin: 0;
+        color: #123f5d;
+        line-height: 1.15;
+      }
+      h1 {
+        font-size: clamp(30px, 5vw, 48px);
+      }
+      h2 {
+        margin-bottom: 12px;
+        font-size: 24px;
+      }
+      p {
+        color: #334155;
+        line-height: 1.65;
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        color: #8a5a00;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .card {
+        border: 1px solid #d8e0e7;
+        border-radius: 8px;
+        background: #ffffff;
+        padding: 16px;
+      }
+      .card b {
+        display: block;
+        margin-bottom: 8px;
+        color: #0f3f67;
+        font-size: 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th,
+      td {
+        border: 1px solid #d8e0e7;
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #eaf1f5;
+        color: #123f5d;
+      }
+      .callout {
+        border-left: 5px solid #b3322a;
+        background: #fff4f1;
+      }
+      a {
+        color: #155e75;
+        font-weight: 700;
+      }
+      @media (max-width: 760px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        section {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <p class="eyebrow">Guia digestible del PDF</p>
+        <h1>Como leer la norma del proyecto KR 9B #117A-55 sin ser arquitecto</h1>
+        <p>
+          Esta pagina convierte la explicacion normativa del PDF en una lectura rapida para
+          entender altura, aislamientos, ICe y ECOS. Es una guia de estudio, no una licencia ni
+          concepto oficial.
+        </p>
+      </section>
+
+      <section class="grid" aria-label="Conceptos clave">
+        <article class="card">
+          <b>Lateral desde 11,40 m</b>
+          No significa un retiro de 11,40 m. Significa que el aislamiento lateral se activa
+          desde esa altura hacia arriba.
+        </article>
+        <article class="card">
+          <b>ICe</b>
+          Es el area construible efectiva total. Para este lote: 326,184 m2 x 5,0 =
+          1.630,92 m2 efectivos.
+        </article>
+        <article class="card">
+          <b>ECOS</b>
+          Es una sensibilidad/incentivo asociado a sostenibilidad. En este proyecto sigue
+          pendiente de concepto oficial.
+        </article>
+      </section>
+
+      <section>
+        <h2>Relacion altura - aislamiento lateral</h2>
+        <p>
+          En Renovacion Urbana, el aislamiento lateral se exige desde 11,40 m o desde el nivel
+          de empate con edificaciones colindantes de mayor altura. Por eso el primer piso no se
+          retira lateralmente por esta regla.
+        </p>
+        <p>
+          El aislamiento lateral no se exige desde el primer piso: se activa cuando la altura
+          acumulada del edificio alcanza o supera el umbral normativo.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Nivel</th>
+              <th>Altura acumulada con 3,00 m/piso</th>
+              <th>Lectura de aislamiento lateral</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Piso 1</td>
+              <td>0,00 a 3,00 m</td>
+              <td>No se exige lateral por la regla de 11,40 m.</td>
+            </tr>
+            <tr>
+              <td>Piso 2</td>
+              <td>3,00 a 6,00 m</td>
+              <td>No se exige lateral por la regla de 11,40 m.</td>
+            </tr>
+            <tr>
+              <td>Piso 3</td>
+              <td>6,00 a 9,00 m</td>
+              <td>No se exige lateral por la regla de 11,40 m.</td>
+            </tr>
+            <tr>
+              <td>Piso 4</td>
+              <td>9,00 a 12,00 m</td>
+              <td>Cruza el umbral de 11,40 m; requiere revisar seccion y arranque real del retiro.</td>
+            </tr>
+            <tr>
+              <td>Piso 5 en adelante</td>
+              <td>12,00 m o mas</td>
+              <td>Debe resolver aislamiento lateral o empate, salvo concepto oficial que permita otra lectura.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="callout">
+        <h2>Clave del predio</h2>
+        <p>
+          El lote mide aproximadamente 12,99 m de ancho. Si arriba se exigen 4,00 m por cada
+          lado, quedan cerca de 4,99 m utiles en la franja superior. Por eso el reto no es solo
+          sumar pisos, sino que esos pisos sean funcionales, vendibles y licenciables.
+        </p>
+      </section>
+
+      <section>
+        <h2>Fuentes y proyecto</h2>
+        <p>
+          PDF fuente:
+          <a href="./factibilidad_KR9B_117A55.pdf">factibilidad_KR9B_117A55.pdf</a>
+        </p>
+        <p>
+          Fuente normativa:
+          <a
+            href="https://www.sdp.gov.co/sites/default/files/actualiza_anexo_5_man_normas_trat_urb.pdf"
+            >Anexo 5 actualizado SDP</a
+          >.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

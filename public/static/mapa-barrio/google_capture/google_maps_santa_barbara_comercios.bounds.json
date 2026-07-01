@@ -1,0 +1,9 @@
+{
+  "north": 4.707695246070759,
+  "south": 4.69112145540184,
+  "east": -74.02973195205384,
+  "west": -74.04636164794617,
+  "opacity": 0.62,
+  "source": "Captura manual de Google Maps con busqueda de comercios para referencia interna/local; no publicar",
+  "calibration_note": "Bounds iniciales estimados con centro 4.6994084,-74.0380468, zoom aproximado 16 y recorte 775x775 px del area de mapa sin panel lateral. Ajustar manualmente si vias/pins no calzan."
+}

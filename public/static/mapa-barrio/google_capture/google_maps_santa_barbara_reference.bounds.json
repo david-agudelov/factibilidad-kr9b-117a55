@@ -1,0 +1,9 @@
+{
+  "north": 4.70835818949489,
+  "south": 4.690458495582774,
+  "east": -74.02906676421814,
+  "west": -74.04702683578186,
+  "opacity": 0.55,
+  "source": "Captura manual de Google Maps para referencia interna/local; no publicar",
+  "calibration_note": "Bounds iniciales estimados con centro 4.6994084,-74.0380468 y zoom aproximado 16 sobre imagen cuadrada 837x837 px. Ajustar manualmente si las vias no calzan."
+}
