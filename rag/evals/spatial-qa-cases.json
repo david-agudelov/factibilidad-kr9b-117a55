@@ -1,0 +1,115 @@
+[
+  {
+    "id": "spatial-001",
+    "question": "¿Qué tratamiento urbanístico aplica al predio?",
+    "requiredLayerIds": ["tratamiento_urbanistico_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-002",
+    "question": "¿Qué área de actividad aplica al predio?",
+    "requiredLayerIds": ["area_actividad_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-003",
+    "question": "¿El predio está dentro de un plan parcial?",
+    "requiredLayerIds": ["plan_parcial_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-004",
+    "question": "¿Qué condición de antejardín aplica al predio?",
+    "requiredLayerIds": ["antejardin_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-005",
+    "question": "¿El predio cruza suelo de reserva?",
+    "requiredLayerIds": ["suelo_reserva_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-006",
+    "question": "¿El predio tiene afectación por sistema hídrico?",
+    "requiredLayerIds": ["eep_sistema_hidrico_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-007",
+    "question": "¿El predio cruza suelo de protección por riesgo?",
+    "requiredLayerIds": ["suelo_proteccion_riesgo_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-008",
+    "question": "¿El predio tiene afectación patrimonial o BIC?",
+    "requiredLayerIds": ["bic_zona_influencia_pot", "bic_bien_interes_cultural_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-009",
+    "question": "¿Qué elevación máxima o restricción AEROPU aplica al predio?",
+    "requiredLayerIds": [
+      "area_elevacion_maxima_pot",
+      "aeropuerto_influencia_indirecta_pot",
+      "lote_bogota"
+    ],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-010",
+    "question": "¿Qué red vial o condición de borde aplica al predio?",
+    "requiredLayerIds": ["red_infraestructura_vial_pot", "antejardin_pot", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-011",
+    "question": "Que condicion de anden aplica al frente del predio?",
+    "requiredLayerIds": ["idu_anden_bogota", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-012",
+    "question": "Que calzada aplica al frente vial del predio?",
+    "requiredLayerIds": ["idu_calzada_bogota", "lote_bogota"],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  },
+  {
+    "id": "spatial-013",
+    "question": "El borde del predio cruza separador, cicloruta o puente IDU?",
+    "requiredLayerIds": [
+      "idu_separador_bogota",
+      "idu_cicloruta_bogota",
+      "idu_puente_bogota",
+      "lote_bogota"
+    ],
+    "requiresParcelResolution": true,
+    "mustReturnInsufficientIfNoParcel": true,
+    "requiresCitation": true
+  }
+]

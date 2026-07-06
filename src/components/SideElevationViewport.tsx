@@ -1,6 +1,5 @@
 import type { ModelParams, NormativeEnvelope } from '../model/types'
 import { SITE_CONSTANTS } from '../model/projectSource'
-import { ViewStatsCard } from './ViewStatsCard'
 import { SHARED_VIEW_FRAME_CLASS, VIEWPORT_SCALE } from '../config/viewportScale'
 
 type SideElevationViewportProps = {
@@ -35,7 +34,6 @@ export function SideElevationViewport({
 
   return (
     <div className="h-full overflow-auto bg-slate-50">
-      <ViewStatsCard envelope={envelope} params={params} />
       <svg
         aria-label="Vista lateral por niveles"
         className={SHARED_VIEW_FRAME_CLASS}
@@ -146,6 +144,23 @@ export function SideElevationViewport({
         >
           {formatNumber(envelope.totalHeight)} m
         </text>
+        <g data-testid="side-setback-canvas-card">
+          <rect
+            fill="#ffffff"
+            height="52"
+            rx="6"
+            stroke="#bae6fd"
+            width="132"
+            x="338"
+            y="18"
+          />
+          <text fill="#0369a1" fontSize="11" fontWeight="700" x="350" y="40">
+            Aislamiento lateral
+          </text>
+          <text fill="#075985" fontSize="14" fontWeight="700" x="350" y="58">
+            {formatNumber(envelope.sideSetbackApplied)} m
+          </text>
+        </g>
         <line
           stroke="#0f766e"
           strokeDasharray="3 3"

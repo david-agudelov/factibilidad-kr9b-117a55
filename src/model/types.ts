@@ -38,6 +38,12 @@ export type NormativeEnvelope = {
   rearSetback: number
   lateralOnsetHeight: number
   sideSetbackApplied: number
+  lowerHeight: number
+  upperHeight: number
+  lowerFloorEquivalent: number
+  upperFloorEquivalent: number
+  lateralOnsetCutsFloor: boolean
+  lateralTransitionFloor: number | null
   lowerFloors: number
   upperFloors: number
   maxFloors: number
@@ -66,6 +72,12 @@ export type ModelGeometry = {
   boundingBox: BoundingBox
   effectiveRearSetback: number
   lateralOnsetHeight: number
+  lowerHeight: number
+  upperHeight: number
+  lowerFloorEquivalent: number
+  upperFloorEquivalent: number
+  lateralOnsetCutsFloor: boolean
+  lateralTransitionFloor: number | null
   lowerFloors: number
   upperFloors: number
   grossLowerFootprintArea: number

@@ -1,0 +1,23 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "factibilidad-rag-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "ai": {
+    "binding": "AI"
+  },
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "factibilidad-rag-dev"
+    }
+  ],
+  "vars": {
+    "RAG_PROVIDER": "cloudflare",
+    "RAG_ENV": "local",
+    "RAG_ALLOWED_ORIGINS": "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:5175,http://127.0.0.1:5175",
+    "RAG_GENERATION_MODEL": "@cf/meta/llama-3.1-8b-instruct-fast",
+    "RAG_EMBEDDING_MODEL": "@cf/baai/bge-m3",
+    "RAG_ACTIVE_INGEST_RUN_ID": "rag-clean-kr9b-v3"
+  }
+}

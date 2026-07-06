@@ -1,0 +1,175 @@
+[
+  {
+    "id": "norm-001",
+    "question": "¿Qué norma rige hoy como fuente legal primaria?",
+    "expectedSourceIds": ["decreto_670_2025_dot"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["Decreto 670 de 2025", "fuente legal primaria"],
+    "mustNotMention": ["Decreto 466 de 2024 como fuente legal primaria vigente"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "Para Bogotá, el Decreto 670 de 2025 solo puede tratarse como fuente legal primaria si el manifest lo marca vigente."
+  },
+  {
+    "id": "norm-002",
+    "question": "¿Qué documento reviso para retrocesos?",
+    "expectedSourceIds": ["anexo_05_manual_normas_comunes_2024"],
+    "allowedSpatialSourceIds": ["antejardin_pot", "area_elevacion_maxima_pot"],
+    "mustMention": ["Anexo 5", "Normas Comunes"],
+    "mustNotMention": ["manual de retrocesos autónomo vigente"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "El Deep-research.md indica que no hay manual de retrocesos autónomo vigente."
+  },
+  {
+    "id": "norm-003",
+    "question": "¿Existe un manual de retrocesos autónomo?",
+    "expectedSourceIds": ["anexo_05_manual_normas_comunes_2024"],
+    "allowedSpatialSourceIds": ["antejardin_pot"],
+    "mustMention": ["no", "Anexo 5", "Normas Comunes"],
+    "mustNotMention": ["manual de retrocesos autónomo vigente"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "La respuesta debe corregir el nombre genérico y llevar la consulta a fuentes oficiales específicas."
+  },
+  {
+    "id": "norm-004",
+    "question": "¿Qué fuente reviso para sostenibilidad?",
+    "expectedSourceIds": ["manual_ecourbanismo_2023"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["Manual de Ecourbanismo", "Construcción Sostenible"],
+    "mustNotMention": ["manual de urbanismo como fuente autónoma"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "La fuente operativa de sostenibilidad debe ser el manual específico, no un manual genérico."
+  },
+  {
+    "id": "norm-005",
+    "question": "¿Qué fuente reviso para espacio público?",
+    "expectedSourceIds": ["manual_espacio_publico_2023"],
+    "allowedSpatialSourceIds": ["red_infraestructura_vial_pot", "antejardin_pot"],
+    "mustMention": ["Manual de Espacio Público"],
+    "mustNotMention": ["manual de urbanismo"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "La Cartilla de Mobiliario Urbano puede complementar, pero el manual específico es la fuente principal para esta pregunta."
+  },
+  {
+    "id": "norm-006",
+    "question": "¿Qué diferencia hay entre decreto, manual, anexo y dataset?",
+    "expectedSourceIds": [
+      "decreto_670_2025_dot",
+      "anexo_05_manual_normas_comunes_2024",
+      "manual_espacio_publico_2023"
+    ],
+    "allowedSpatialSourceIds": ["lote_bogota", "tratamiento_urbanistico_pot"],
+    "mustMention": ["decreto", "manual", "anexo", "dataset"],
+    "mustNotMention": ["dataset como artículo normativo"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "La respuesta debe separar texto normativo/operativo de datasets vectoriales usados para overlays."
+  },
+  {
+    "id": "norm-007",
+    "question": "¿Una respuesta del chat reemplaza Curaduría?",
+    "expectedSourceIds": ["project_rag_implementation_plan_md"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["no reemplaza", "Curaduría"],
+    "mustNotMention": ["concepto legal definitivo"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "Esta es una regla de producto y seguridad: el chat es preliminar y no sustituye revisión oficial."
+  },
+  {
+    "id": "norm-008",
+    "question": "¿Qué pasa si el chat no encuentra cita?",
+    "expectedSourceIds": [],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["No encontré soporte suficiente en los documentos y datos cargados."],
+    "mustNotMention": ["según mi conocimiento general"],
+    "requiresCitation": false,
+    "requiresSpatialFacts": false,
+    "notes": "La respuesta correcta es declarar insuficiencia, no inventar soporte."
+  },
+  {
+    "id": "norm-009",
+    "question": "¿Cómo se debe tratar un decreto derogado o compilado?",
+    "expectedSourceIds": ["decreto_670_2025_dot"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["provenance", "no como fuente legal primaria"],
+    "mustNotMention": ["derogado como fuente legal primaria vigente"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "Los actos derogados o compilados pueden explicar trazabilidad, pero no deben soportar una regla vigente como primary_law."
+  },
+  {
+    "id": "norm-010",
+    "question": "¿Qué fuente usar para restricciones de altura por aeropuerto?",
+    "expectedSourceIds": ["mapa_aeropu_referencia"],
+    "allowedSpatialSourceIds": ["area_elevacion_maxima_pot", "aeropuerto_influencia_indirecta_pot"],
+    "mustMention": ["AEROPU", "elevación máxima"],
+    "mustNotMention": ["altura garantizada sin Aerocivil"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "Para un predio concreto debe cruzarse el mapa con datasets vectoriales y advertir revisión Aerocivil cuando aplique."
+  },
+  {
+    "id": "norm-011",
+    "question": "Que fuente reviso para salidas de emergencia?",
+    "expectedSourceIds": [
+      "nsr10_decreto_926_2010",
+      "nsr10_titulo_j_proteccion_incendios",
+      "nsr10_titulo_k_requisitos_complementarios"
+    ],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["NSR-10", "salidas", "evacuacion"],
+    "mustNotMention": ["dimension garantizada sin ocupacion"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "Las salidas de emergencia pertenecen al codigo arquitectonico/seguridad humana; la respuesta debe citar NSR-10 y no inventar dimensiones."
+  },
+  {
+    "id": "norm-012",
+    "question": "Que ancho debe tener una escalera de evacuacion?",
+    "expectedSourceIds": ["nsr10_titulo_k_requisitos_complementarios"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["Titulo K", "ocupacion"],
+    "mustNotMention": ["ancho unico para todos los casos"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "El ancho de escaleras depende de ocupacion, carga de ocupantes, uso, altura y configuracion; el RAG no debe validar automaticamente el diseno."
+  },
+  {
+    "id": "norm-013",
+    "question": "Que fuente reviso para vacios, ventanas, ventilacion e iluminacion?",
+    "expectedSourceIds": ["nsr10_titulo_k_requisitos_complementarios"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["ventilacion", "iluminacion"],
+    "mustNotMention": ["cumple automaticamente"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "La consulta debe tratarse como codigo arquitectonico citado, no como recalculo geometrico del modelo."
+  },
+  {
+    "id": "norm-014",
+    "question": "El chat puede validar automaticamente escaleras, salidas o ventanas?",
+    "expectedSourceIds": ["project_rag_implementation_plan_md"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["no", "fase posterior", "motor deterministico"],
+    "mustNotMention": ["validacion automatica definitiva"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "La fase V2.1 solo responde con citas; la validacion automatica de codigo arquitectonico queda bloqueada para una fase posterior."
+  },
+  {
+    "id": "norm-015",
+    "question": "Que fuente reviso para proteccion contra incendios?",
+    "expectedSourceIds": ["nsr10_titulo_j_proteccion_incendios"],
+    "allowedSpatialSourceIds": [],
+    "mustMention": ["Titulo J", "incendios"],
+    "mustNotMention": ["concepto definitivo de bomberos"],
+    "requiresCitation": true,
+    "requiresSpatialFacts": false,
+    "notes": "El Titulo J debe citarse como fuente de proteccion contra incendios, con advertencia de revision oficial."
+  }
+]

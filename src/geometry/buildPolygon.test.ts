@@ -20,10 +20,32 @@ describe('buildPolygon', () => {
       ecosMode: false,
     })
 
-    expect(geometry.lowerFloors).toBe(4)
-    expect(geometry.upperFloors).toBe(1)
+    expect(geometry.lowerFloors).toBe(3)
+    expect(geometry.upperFloors).toBe(2)
+    expect(geometry.lowerFloorEquivalent).toBe(3)
+    expect(geometry.upperFloorEquivalent).toBe(2)
     expect(polygonArea(geometry.lowerFootprint)).toBeCloseTo(261.24, 2)
     expect(polygonArea(geometry.upperFootprint)).toBeCloseTo(100.38, 2)
+  })
+
+  it('keeps a lateral upper mass when the onset cuts through the top floor', () => {
+    const geometry = buildPolygon({
+      ...DEFAULT_PARAMS,
+      floors: 4,
+      floorHeight: 3,
+      ecosMode: false,
+    })
+
+    expect(geometry.lowerHeight).toBe(9)
+    expect(geometry.upperHeight).toBe(3)
+    expect(geometry.lowerFloorEquivalent).toBe(3)
+    expect(geometry.upperFloorEquivalent).toBe(1)
+    expect(geometry.upperFootprint[0].x).toBe(4)
+    expect(geometry.builtArea).toBeCloseTo(
+      geometry.netLowerFootprintArea * 3 +
+        geometry.netUpperFootprintArea,
+      2,
+    )
   })
 
   it('does not create a central courtyard in v1', () => {

@@ -29,19 +29,19 @@ export function computeFunctionalEnvelope(
     geometry.netLowerFootprintArea,
     coreAreaPerFloor,
   )
-  const upperUsableAreaPerFloor = envelope.upperFloors > 0
+  const upperUsableAreaPerFloor = envelope.upperHeight > 0
     ? usableAreaPerFloor(geometry.netUpperFootprintArea, coreAreaPerFloor)
     : 0
   const totalUsableArea = roundTo(
-    lowerUsableAreaPerFloor * envelope.lowerFloors +
-      upperUsableAreaPerFloor * envelope.upperFloors,
+    lowerUsableAreaPerFloor * envelope.lowerFloorEquivalent +
+      upperUsableAreaPerFloor * envelope.upperFloorEquivalent,
     2,
   )
   const adjustedSellableArea = roundTo(
     totalUsableArea * params.sellableEfficiency,
     2,
   )
-  const upperWidth = envelope.upperFloors > 0
+  const upperWidth = envelope.upperHeight > 0
     ? boundingBox(geometry.upperFootprint).width
     : boundingBox(geometry.lowerFootprint).width
   const lowerWidth = boundingBox(geometry.lowerFootprint).width
@@ -56,7 +56,7 @@ export function computeFunctionalEnvelope(
   }
 
   if (
-    envelope.upperFloors > 0 &&
+    envelope.upperHeight > 0 &&
     minUsefulPlateWidth < FUNCTIONAL_RULES.minResidentialPlateWidth
   ) {
     messages.push(

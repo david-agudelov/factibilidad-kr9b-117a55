@@ -32,7 +32,14 @@ export function FunctionalPanel({ functionality }: FunctionalPanelProps) {
       </div>
 
       <div className="space-y-3 p-3">
-        <div className={`rounded-md border border-l-4 p-3 ${statusClass[functionality.status]}`}>
+        <div
+          className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[1.4fr_repeat(5,minmax(0,1fr))]"
+          data-testid="functional-summary-row"
+        >
+        <div
+          className={`rounded-md border border-l-4 p-3 ${statusClass[functionality.status]}`}
+          data-testid="functional-core-card"
+        >
           <p className="text-xs font-medium uppercase tracking-normal text-slate-500">
             {functionality.status}
           </p>
@@ -44,38 +51,42 @@ export function FunctionalPanel({ functionality }: FunctionalPanelProps) {
           </p>
         </div>
 
-        <dl className="grid gap-3 text-sm">
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-            <dt className="text-xs text-slate-500">Nucleo asumido por planta</dt>
-            <dd className="mt-1 font-mono text-lg tabular-nums text-slate-950">
+        <dl
+          className="contents"
+          data-testid="functional-metrics-row"
+        >
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-2">
+            <dt className="text-xs leading-4 text-slate-500">Nucleo asumido por planta</dt>
+            <dd className="mt-1 font-mono text-base tabular-nums text-slate-950">
               {formatNumber(functionality.coreAreaPerFloor)} m2
             </dd>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-            <dt className="text-xs text-slate-500">Area util planta inferior</dt>
-            <dd className="mt-1 font-mono text-lg tabular-nums text-slate-950">
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-2">
+            <dt className="text-xs leading-4 text-slate-500">Area util planta inferior</dt>
+            <dd className="mt-1 font-mono text-base tabular-nums text-slate-950">
               {formatNumber(functionality.lowerUsableAreaPerFloor)} m2
             </dd>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-            <dt className="text-xs text-slate-500">Area util planta superior</dt>
-            <dd className="mt-1 font-mono text-lg tabular-nums text-slate-950">
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-2">
+            <dt className="text-xs leading-4 text-slate-500">Area util planta superior</dt>
+            <dd className="mt-1 font-mono text-base tabular-nums text-slate-950">
               {formatNumber(functionality.upperUsableAreaPerFloor)} m2
             </dd>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-            <dt className="text-xs text-slate-500">Area util total</dt>
-            <dd className="mt-1 font-mono text-lg tabular-nums text-slate-950">
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-2">
+            <dt className="text-xs leading-4 text-slate-500">Area util total</dt>
+            <dd className="mt-1 font-mono text-base tabular-nums text-slate-950">
               {formatNumber(functionality.totalUsableArea)} m2
             </dd>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-            <dt className="text-xs text-slate-500">Vendible ajustada</dt>
-            <dd className="mt-1 font-mono text-lg tabular-nums text-slate-950">
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-2">
+            <dt className="text-xs leading-4 text-slate-500">Vendible ajustada</dt>
+            <dd className="mt-1 font-mono text-base tabular-nums text-slate-950">
               {formatNumber(functionality.adjustedSellableArea)} m2
             </dd>
           </div>
         </dl>
+        </div>
 
         {functionality.messages.length > 0 && (
           <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">

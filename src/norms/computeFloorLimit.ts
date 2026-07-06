@@ -22,7 +22,34 @@ export function getLateralOnsetHeight(params: ModelParams) {
 
 export function floorsWithoutLateral(params: ModelParams) {
   const onset = getLateralOnsetHeight(params)
-  return Math.max(0, Math.ceil(onset / params.floorHeight))
+  return Math.max(0, Math.floor(onset / params.floorHeight))
+}
+
+function lateralHeightSplit(params: ModelParams, totalHeight: number) {
+  const onset = getLateralOnsetHeight(params)
+  const rawLowerFloors = onset / params.floorHeight
+  const crossesOnset = totalHeight > onset
+  const lateralOnsetCutsFloor =
+    crossesOnset && Math.abs(rawLowerFloors - Math.round(rawLowerFloors)) > 0.0001
+  const lowerFloorEquivalent = crossesOnset
+    ? Math.min(params.floors, Math.floor(rawLowerFloors))
+    : params.floors
+  const upperFloorEquivalent = crossesOnset
+    ? Math.max(0, params.floors - lowerFloorEquivalent)
+    : 0
+  const lowerHeight = roundTo(lowerFloorEquivalent * params.floorHeight, 2)
+  const upperHeight = roundTo(upperFloorEquivalent * params.floorHeight, 2)
+
+  return {
+    lowerHeight,
+    upperHeight,
+    lowerFloorEquivalent,
+    upperFloorEquivalent,
+    lateralOnsetCutsFloor,
+    lateralTransitionFloor: crossesOnset ? lowerFloorEquivalent + 1 : null,
+    lowerFloors: lowerFloorEquivalent,
+    upperFloors: upperFloorEquivalent,
+  }
 }
 
 function sideSetbackForHeight(params: ModelParams, totalHeight: number) {
@@ -46,21 +73,30 @@ export function effectiveAreaForFloors(
   const lowerArea = Math.max(0, SITE_CONSTANTS.width * usableDepth)
   const upperWidth = Math.max(0, SITE_CONSTANTS.width - sideSetback * 2)
   const upperArea = Math.max(0, upperWidth * usableDepth)
-  const lowerFloors = Math.min(floors, floorsWithoutLateral(params))
-  const upperFloors = Math.max(0, floors - lowerFloors)
+  const split = lateralHeightSplit({ ...params, floors }, totalHeight)
   const iceIndex = options.iceIndex ?? SITE_CONSTANTS.iceIndex
 
   return {
     totalHeight,
     rear,
-    lowerFloors,
-    upperFloors,
+    lowerHeight: split.lowerHeight,
+    upperHeight: split.upperHeight,
+    lowerFloorEquivalent: split.lowerFloorEquivalent,
+    upperFloorEquivalent: split.upperFloorEquivalent,
+    lateralOnsetCutsFloor: split.lateralOnsetCutsFloor,
+    lateralTransitionFloor: split.lateralTransitionFloor,
+    lowerFloors: split.lowerFloors,
+    upperFloors: split.upperFloors,
     lowerNet: roundTo(lowerArea, 2),
     upperNet: roundTo(upperArea, 2),
     upperWidth,
     sideSetback,
     iceLimit: roundTo(SITE_CONSTANTS.area * iceIndex, 2),
-    effectiveArea: roundTo(lowerFloors * lowerArea + upperFloors * upperArea, 2),
+    effectiveArea: roundTo(
+      split.lowerFloorEquivalent * lowerArea +
+        split.upperFloorEquivalent * upperArea,
+      2,
+    ),
   }
 }
 
@@ -119,7 +155,7 @@ export function computeNormativeEnvelope(params: ModelParams): NormativeEnvelope
   const status =
     params.floors >= 8
       ? 'requiere confirmacion'
-      : params.floors >= 6 || params.ecosMode
+      : params.floors >= 6 || params.ecosMode || area.lateralOnsetCutsFloor
         ? 'condicionado'
         : 'preliminar viable'
 
@@ -128,6 +164,12 @@ export function computeNormativeEnvelope(params: ModelParams): NormativeEnvelope
     rearSetback: area.rear,
     lateralOnsetHeight: floorLimit.lateralOnsetHeight,
     sideSetbackApplied: area.sideSetback,
+    lowerHeight: area.lowerHeight,
+    upperHeight: area.upperHeight,
+    lowerFloorEquivalent: area.lowerFloorEquivalent,
+    upperFloorEquivalent: area.upperFloorEquivalent,
+    lateralOnsetCutsFloor: area.lateralOnsetCutsFloor,
+    lateralTransitionFloor: area.lateralTransitionFloor,
     lowerFloors: area.lowerFloors,
     upperFloors: area.upperFloors,
     maxFloors: floorLimit.maxFloors,

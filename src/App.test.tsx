@@ -1,15 +1,19 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 describe('App live calculations UI', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
   it('renders only the real parametric sliders with the dynamic floor range', () => {
     render(<App />)
 
     expect(screen.getByText('KR 9B #117A-55')).toBeInTheDocument()
-    expect(screen.getAllByText(/factibilidad_KR9B_117A55\.pdf/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/factibilidad_KR9B_117A55\.pdf/).length).toBe(1)
     const sourceLinks = screen.getAllByRole('link', { name: 'factibilidad_KR9B_117A55.pdf' })
-    expect(sourceLinks.length).toBeGreaterThanOrEqual(2)
+    expect(sourceLinks.length).toBe(1)
     sourceLinks.forEach((link) => {
       expect(link).toHaveAttribute('href', '/static/factibilidad_KR9B_117A55.pdf')
     })
@@ -31,6 +35,39 @@ describe('App live calculations UI', () => {
     expect(screen.queryByLabelText('Lateral desde')).not.toBeInTheDocument()
   })
 
+  it('keeps the first-view cleanup free of duplicated summary facts', () => {
+    render(<App />)
+
+    expect(screen.queryByText('Live calculations')).not.toBeInTheDocument()
+    expect(screen.getByTestId('modeler-home-layout')).toHaveAttribute(
+      'data-home-layout',
+      'compact-three-column',
+    )
+    expect(screen.getByTestId('modeler-home-layout')).toHaveClass(
+      'xl:grid-cols-[280px_minmax(0,1fr)_320px]',
+    )
+
+    const sliderPanel = screen.getByText('Parametros parametricos').closest('aside')
+    expect(sliderPanel).not.toHaveTextContent('Pisos: 5 / 9 maximo preliminar.')
+    expect(sliderPanel).not.toHaveTextContent('Altura total: 15,00 m')
+    expect(sliderPanel).not.toHaveTextContent('paginas')
+
+    expect(screen.queryByTestId('view-stats-card')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('view-stat-total-height')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('view-stat-rear-setback')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('view-stat-side-setback')).not.toBeInTheDocument()
+
+    const metricsDashboard = screen.getByTestId('metrics-dashboard')
+    expect(within(metricsDashboard).queryByText('Area construida total')).not.toBeInTheDocument()
+    expect(screen.getByTestId('built-area-donut-center')).toHaveTextContent('Area construida')
+
+    expect(screen.queryByText('Calibracion con PDF')).not.toBeInTheDocument()
+    expect(screen.queryByText(/Evaluacion por altura total/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Estado: Dentro de reglas PDF/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Referencia cercana del PDF/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Diferencia referencial/)).not.toBeInTheDocument()
+  })
+
   it('updates derived height and normative outputs immediately when sliders change', () => {
     render(<App />)
 
@@ -38,20 +75,24 @@ describe('App live calculations UI', () => {
     fireEvent.change(floors, { target: { value: '2' } })
 
     expect(screen.getAllByText('6,00 m').length).toBeGreaterThan(0)
-    expect(screen.getByText('Posterior calculado: 4.00 m.')).toBeInTheDocument()
+    expect(screen.queryByText(/Posterior calculado/)).not.toBeInTheDocument()
   })
 
-  it('shows PDF calibration by total height without blocking custom floor heights', () => {
+  it('omits PDF calibration details from the modeler home', () => {
     render(<App />)
 
-    expect(screen.getByText('Calibracion con PDF')).toBeInTheDocument()
-    expect(screen.getByText(/Evaluacion por altura total/)).toBeInTheDocument()
+    expect(screen.queryByText('Calibracion con PDF')).not.toBeInTheDocument()
+    expect(screen.queryByText(/Evaluacion por altura total/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Estado: Dentro de reglas PDF/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Referencia cercana del PDF/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/area PDF/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Diferencia referencial/)).not.toBeInTheDocument()
 
     const floorHeight = screen.getByLabelText('Altura entre pisos') as HTMLInputElement
     fireEvent.change(floorHeight, { target: { value: '3.2' } })
 
-    expect(screen.getByText(/Modelo parametrico evaluado por altura total/)).toBeInTheDocument()
-    expect(screen.getByText(/3.00 m\/piso como supuesto del estudio/)).toBeInTheDocument()
+    expect(screen.queryByText(/Modelo parametrico evaluado por altura total/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/3.00 m\/piso como supuesto del estudio/)).not.toBeInTheDocument()
   })
 
   it('uses a selectable core scenario instead of a core slider', () => {
@@ -61,6 +102,16 @@ describe('App live calculations UI', () => {
     expect(screen.getByLabelText('Escenario de nucleo')).toBeInTheDocument()
     expect(screen.queryByLabelText('Nucleo')).not.toBeInTheDocument()
     expect(screen.getAllByText(/escenario preliminar/i).length).toBeGreaterThan(0)
+    expect(screen.getByTestId('functional-summary-row')).toHaveClass(
+      'xl:grid-cols-[1.4fr_repeat(5,minmax(0,1fr))]',
+    )
+    expect(screen.getByTestId('functional-core-card')).toHaveTextContent('Nucleo estandar')
+    expect(screen.getByTestId('functional-metrics-row')).toHaveClass('contents')
+    expect(screen.getByText('Nucleo asumido por planta')).toBeInTheDocument()
+    expect(screen.getByText('Area util planta inferior')).toBeInTheDocument()
+    expect(screen.getByText('Area util planta superior')).toBeInTheDocument()
+    expect(screen.getByText('Area util total')).toBeInTheDocument()
+    expect(screen.getByText('Vendible ajustada')).toBeInTheDocument()
 
     const coreSelector = screen.getByLabelText('Escenario de nucleo') as HTMLSelectElement
     const sellableBefore = screen.getByText('Area vendible estimada')
@@ -92,12 +143,9 @@ describe('App live calculations UI', () => {
     expect(screen.getByLabelText('Vista lateral por niveles')).toHaveAttribute('data-view-frame', 'shared-model-frame')
     expect(screen.getAllByText(/Nivel/).length).toBeGreaterThanOrEqual(5)
     expect(screen.getAllByText('Aislamiento posterior').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText('Pisos').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText('Altura entre pisos').length).toBeGreaterThanOrEqual(2)
-    expect(screen.getByTestId('view-stat-floors')).toHaveTextContent('5')
-    expect(screen.getByTestId('view-stat-total-height')).toHaveTextContent('15,00 m')
-    expect(screen.getByTestId('view-stat-rear-setback')).toHaveTextContent('5,00 m')
-    expect(screen.getByTestId('view-stat-side-setback')).toHaveTextContent('4,00 m')
+    expect(screen.queryByTestId('view-stats-card')).not.toBeInTheDocument()
+    expect(screen.getByTestId('side-setback-canvas-card')).toHaveTextContent('Aislamiento lateral')
+    expect(screen.getByTestId('side-setback-canvas-card')).toHaveTextContent('4,00 m')
 
     fireEvent.click(footprintTab)
     expect(footprintTab).toHaveAttribute('aria-selected', 'true')
@@ -113,16 +161,14 @@ describe('App live calculations UI', () => {
     expect(screen.getByLabelText(/Vista 2D/).getAttribute('class')).toContain('min-h-[520px]')
     expect(screen.getByText(/Aislamiento posterior:/)).toHaveAttribute('font-size', '16')
     expect(screen.getByText('Niveles')).toBeInTheDocument()
-    expect(screen.getAllByText('Pisos').length).toBeGreaterThanOrEqual(1)
     expect(screen.getAllByText('Altura total').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByTestId('view-stat-total-height')).toHaveTextContent('15,00 m')
-    expect(screen.getByTestId('view-stat-rear-setback')).toHaveTextContent('5,00 m')
+    expect(screen.queryByTestId('view-stats-card')).not.toBeInTheDocument()
 
     fireEvent.click(massTab)
     expect(massTab).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByText(/Vista 3D no disponible/)).toBeInTheDocument()
     expect(screen.getByText(/orbitar/)).toBeInTheDocument()
-    expect(screen.getByTestId('view-stat-total-height')).toHaveTextContent('15,00 m')
+    expect(screen.queryByTestId('view-stats-card')).not.toBeInTheDocument()
     expect(screen.getByTestId('view-floor-contours')).toHaveTextContent('Contornos por piso: 5')
     expect(screen.getByTestId('mass-viewport')).toHaveAttribute('data-initial-scale', 'side-elevation')
     expect(screen.getByTestId('mass-viewport')).toHaveAttribute('data-view-frame', 'shared-model-frame')
@@ -153,7 +199,7 @@ describe('App live calculations UI', () => {
     expect(within(metricsDashboard).queryByText('Espacio libre')).not.toBeInTheDocument()
     expect(within(metricsDashboard).queryByText('Espacio libre / Area lote')).not.toBeInTheDocument()
     expect(screen.getByTestId('secondary-footprint-metric')).toHaveTextContent('Footprint')
-    expect(screen.getAllByText('Area construida total').length).toBeGreaterThanOrEqual(1)
+    expect(within(metricsDashboard).queryByText('Area construida total')).not.toBeInTheDocument()
     expect(screen.getByText('Area util despues de nucleo')).toBeInTheDocument()
     expect(screen.getByText('Area vendible estimada')).toBeInTheDocument()
     expect(screen.getByText('Util / construida')).toBeInTheDocument()
@@ -161,10 +207,10 @@ describe('App live calculations UI', () => {
     expect(screen.getByText('Vendible / construida')).toBeInTheDocument()
     expect(screen.getByText('Footprint / Area lote')).toBeInTheDocument()
 
-    expect(screen.getByTestId('ratio-internal-efficiency')).toHaveTextContent('79,05 %')
-    expect(screen.getByTestId('ratio-internal-efficiency')).toHaveTextContent('Bueno')
+    expect(screen.getByTestId('ratio-internal-efficiency')).toHaveTextContent('75,62 %')
+    expect(screen.getByTestId('ratio-internal-efficiency')).toHaveTextContent('Atencion')
     expect(screen.getByTestId('ratio-commercial-efficiency')).toHaveTextContent('78,00 %')
-    expect(screen.getByTestId('ratio-sellable-built')).toHaveTextContent('61,66 %')
+    expect(screen.getByTestId('ratio-sellable-built')).toHaveTextContent('58,98 %')
     expect(screen.getByTestId('ratio-occupancy')).toHaveTextContent('80,09 %')
     expect(screen.getByTestId('areas-bars')).toBeInTheDocument()
     expect(screen.getByTestId('built-area-donut')).toBeInTheDocument()
@@ -184,10 +230,18 @@ describe('App live calculations UI', () => {
     expect(screen.getByTestId('metrics-dashboard')).toHaveClass('overflow-visible')
     expect(footprintMetric).toHaveClass('bg-slate-50')
 
-    expect(screen.getByTestId('central-model-column')).toContainElement(
-      screen.getByText('Validacion preliminar OK').closest('section'),
-    )
-    expect(screen.getByTestId('right-analysis-column')).not.toHaveTextContent('Validacion preliminar OK')
+    expect(screen.queryByText('Validacion preliminar condicionada')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(
+        'El aislamiento lateral inicia dentro del piso 4; por criterio conservador, el piso completo se modela con aislamiento.',
+      ),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText(/Limite de pisos/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Altura total actual/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Posterior calculado/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Lateral calculado/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Eficiencia vendible/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Pendientes antes de cerrar pisos/)).not.toBeInTheDocument()
     expect(screen.getByTestId('central-model-column')).toContainElement(
       screen.getByText('Funcionalidad').closest('section'),
     )
@@ -197,8 +251,29 @@ describe('App live calculations UI', () => {
     expect(centralText.indexOf('Funcionalidad')).toBeGreaterThan(
       centralText.indexOf('Visualizacion del modelo'),
     )
-    expect(centralText.indexOf('Validacion preliminar OK')).toBeGreaterThan(
-      centralText.indexOf('Funcionalidad'),
+  })
+
+  it('shows the economic dashboard from live model data and updates it with sliders', () => {
+    render(<App />)
+
+    expect(screen.getByText('Viabilidad economica')).toBeInTheDocument()
+    expect(screen.getByText('Lote + utilidad')).toBeInTheDocument()
+    expect(screen.getByText('Conservador')).toBeInTheDocument()
+    expect(screen.getByText('Base')).toBeInTheDocument()
+    expect(screen.getByText('Optimista')).toBeInTheDocument()
+    expect(screen.getByText('Valor residual lote')).toBeInTheDocument()
+    expect(screen.getByText('Delta lote')).toBeInTheDocument()
+    expect(screen.getByText('Retorno inversionista')).toBeInTheDocument()
+
+    const profitBefore = screen.getByTestId('economic-profit').textContent
+    const floors = screen.getByLabelText('Numero de pisos') as HTMLInputElement
+
+    fireEvent.change(floors, { target: { value: '8' } })
+
+    expect(screen.getByTestId('economic-profit').textContent).not.toBe(profitBefore)
+    expect(screen.getByTestId('economic-dashboard')).toHaveAttribute(
+      'data-source',
+      'live-model-snapshot',
     )
   })
 
@@ -264,5 +339,46 @@ describe('App live calculations UI', () => {
       'src',
       expect.stringContaining('/static/mapa-barrio/index.html'),
     )
+  })
+
+  it('opens the normative consultation panel without exposing frontend secrets', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            status: 'insufficient_sources',
+            answer: 'No encontre soporte suficiente en los documentos y datos cargados.',
+            spatialFactsUsed: [],
+            citations: [],
+            warnings: [],
+          }),
+      }),
+    )
+
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Consulta normativa' }))
+
+    expect(screen.getByTestId('normative-chat-panel')).toBeInTheDocument()
+    expect(
+      within(screen.getByTestId('normative-chat-panel')).getByText('Consulta normativa'),
+    ).toBeInTheDocument()
+    expect(
+      within(screen.getByTestId('normative-chat-panel')).getByText(/Consulta preliminar/),
+    ).toBeInTheDocument()
+    expect(
+      within(screen.getByTestId('normative-chat-panel')).getByText(/Aerocivil/),
+    ).toBeInTheDocument()
+
+    const question = screen.getByLabelText('Pregunta normativa') as HTMLTextAreaElement
+    fireEvent.change(question, { target: { value: 'Que norma soporta el caso?' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Enviar pregunta' }))
+
+    expect(await screen.findByText(/No encontr/)).toBeInTheDocument()
+    expect(document.body.textContent).not.toContain('OPENAI')
+    expect(document.body.textContent).not.toContain('API_KEY')
+    expect(document.body.textContent).not.toContain('VECTOR_STORE')
   })
 })

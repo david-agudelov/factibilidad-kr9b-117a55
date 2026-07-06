@@ -4,7 +4,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { SITE_CONSTANTS } from '../model/projectSource'
 import type { ModelGeometry, ModelParams, NormativeEnvelope } from '../model/types'
-import { ViewStatsCard } from './ViewStatsCard'
 import { SHARED_VIEW_FRAME_CLASS, VIEWPORT_SCALE } from '../config/viewportScale'
 
 type MassViewport3DProps = {
@@ -13,7 +12,7 @@ type MassViewport3DProps = {
   params: ModelParams
 }
 
-export function MassViewport3D({ envelope, geometry, params }: MassViewport3DProps) {
+export function MassViewport3D({ geometry, params }: MassViewport3DProps) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [unavailable, setUnavailable] = useState(import.meta.env.MODE === 'test')
 
@@ -75,7 +74,7 @@ export function MassViewport3D({ envelope, geometry, params }: MassViewport3DPro
 
     const lowerDepth =
       geometry.lowerFootprint[2]?.y - geometry.lowerFootprint[0]?.y || 0
-    const lowerHeight = geometry.lowerFloors * params.floorHeight
+    const lowerHeight = geometry.lowerHeight
     const lowerMassGeometry = new THREE.BoxGeometry(SITE_CONSTANTS.width, lowerHeight, lowerDepth)
     const lowerMassMaterial = new THREE.MeshStandardMaterial({
         color: 0x22c55e,
@@ -93,12 +92,12 @@ export function MassViewport3D({ envelope, geometry, params }: MassViewport3DPro
     disposableGeometries.push(lowerMassGeometry)
     disposableMaterials.push(lowerMassMaterial)
 
-    if (geometry.upperFloors > 0) {
+    if (geometry.upperHeight > 0) {
       const upperWidth = Math.max(
         0.01,
         geometry.upperFootprint[1]?.x - geometry.upperFootprint[0]?.x || 0,
       )
-      const upperHeight = geometry.upperFloors * params.floorHeight
+      const upperHeight = geometry.upperHeight
       const upperMassGeometry = new THREE.BoxGeometry(upperWidth, upperHeight, lowerDepth)
       const upperMassMaterial = new THREE.MeshStandardMaterial({
           color: 0x7dd3fc,
@@ -141,7 +140,7 @@ export function MassViewport3D({ envelope, geometry, params }: MassViewport3DPro
     }
 
     for (let floor = 1; floor <= params.floors; floor += 1) {
-      if (floor <= geometry.lowerFloors || geometry.upperFloors === 0) {
+      if (floor <= geometry.lowerFloors || geometry.upperHeight === 0) {
         addFloorContour(floor, SITE_CONSTANTS.width, lowerDepth, 0, 0x15803d)
       } else {
         const upperWidth = Math.max(
@@ -196,7 +195,6 @@ export function MassViewport3D({ envelope, geometry, params }: MassViewport3DPro
   if (unavailable) {
     return (
       <div className="bg-slate-50">
-        <ViewStatsCard envelope={envelope} params={params} />
         <p
           className="border-b border-slate-200 bg-white px-4 py-2 text-xs font-medium text-sky-800"
           data-testid="view-floor-contours"
@@ -218,7 +216,6 @@ export function MassViewport3D({ envelope, geometry, params }: MassViewport3DPro
 
   return (
     <div className="relative bg-slate-50">
-      <ViewStatsCard envelope={envelope} params={params} />
       <p className="absolute left-4 top-32 z-10 rounded-md border border-emerald-200 bg-white/90 px-3 py-1 text-xs font-medium text-emerald-900">
         Arrastra para orbitar, rueda para zoom.
       </p>

@@ -23,7 +23,12 @@ describe('computeMetrics', () => {
     expect(metricValue('lotArea', metrics)).toBeCloseTo(326.184, 2)
     expect(metricValue('perimeter', metrics)).toBeCloseTo(76.187, 2)
     expect(metricValue('footprint', metrics)).toBeCloseTo(261.24, 2)
-    expect(metricValue('builtArea', metrics)).toBeCloseTo(1145.34, 2)
+    expect(metricValue('builtArea', metrics)).toBeCloseTo(geometry.builtArea, 2)
+    expect(metricValue('builtArea', metrics)).toBeCloseTo(
+      geometry.netLowerFootprintArea * 3 +
+        geometry.netUpperFootprintArea * 2,
+      2,
+    )
     expect(metricValue('iceLimit', metrics)).toBeCloseTo(1630.92, 2)
     expect(metricValue('rearSetback', metrics)).toBeCloseTo(5, 2)
     expect(metricValue('sideSetback', metrics)).toBeCloseTo(4, 2)

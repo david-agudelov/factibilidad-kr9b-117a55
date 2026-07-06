@@ -36,7 +36,7 @@ describe('computeFloorLimit', () => {
   it('can be limited by effective construction index before height', () => {
     const limit = computeFloorLimit(DEFAULT_PARAMS, { iceIndex: 3 })
 
-    expect(limit.maxFloors).toBe(3)
+    expect(limit.maxFloors).toBe(4)
     expect(limit.limitingFactors).toContain('ICe maximo')
   })
 
@@ -52,6 +52,79 @@ describe('computeFloorLimit', () => {
 })
 
 describe('computeNormativeEnvelope', () => {
+  it('absorbs the full floor when the base lateral onset cuts a floor', () => {
+    const envelope = computeNormativeEnvelope({
+      ...DEFAULT_PARAMS,
+      floors: 4,
+      floorHeight: 3,
+      ecosMode: false,
+    })
+
+    expect(envelope.totalHeight).toBe(12)
+    expect(envelope.lateralOnsetHeight).toBe(11.4)
+    expect(envelope.lowerHeight).toBe(9)
+    expect(envelope.upperHeight).toBe(3)
+    expect(envelope.lowerFloorEquivalent).toBe(3)
+    expect(envelope.upperFloorEquivalent).toBe(1)
+    expect(envelope.lateralOnsetCutsFloor).toBe(true)
+    expect(envelope.lateralTransitionFloor).toBe(4)
+    expect(envelope.sideSetbackApplied).toBe(4)
+    expect(envelope.status).toBe('condicionado')
+  })
+
+  it('absorbs the full floor when the ECOS lateral onset cuts a floor', () => {
+    const envelope = computeNormativeEnvelope({
+      ...DEFAULT_PARAMS,
+      floors: 5,
+      floorHeight: 3.2,
+      ecosMode: true,
+    })
+
+    expect(envelope.totalHeight).toBe(16)
+    expect(envelope.lateralOnsetHeight).toBe(15.7)
+    expect(envelope.lowerHeight).toBe(12.8)
+    expect(envelope.upperHeight).toBe(3.2)
+    expect(envelope.lowerFloorEquivalent).toBe(4)
+    expect(envelope.upperFloorEquivalent).toBe(1)
+    expect(envelope.lateralOnsetCutsFloor).toBe(true)
+    expect(envelope.lateralTransitionFloor).toBe(5)
+    expect(envelope.sideSetbackApplied).toBe(4)
+    expect(envelope.status).toBe('condicionado')
+  })
+
+  it('absorbs a minimum-height floor instead of creating a tiny lateral cap', () => {
+    const envelope = computeNormativeEnvelope({
+      ...DEFAULT_PARAMS,
+      floors: 5,
+      floorHeight: 2.3,
+      ecosMode: false,
+    })
+
+    expect(envelope.totalHeight).toBe(11.5)
+    expect(envelope.lowerHeight).toBe(9.2)
+    expect(envelope.upperHeight).toBe(2.3)
+    expect(envelope.lowerFloorEquivalent).toBe(4)
+    expect(envelope.upperFloorEquivalent).toBe(1)
+    expect(envelope.lateralOnsetCutsFloor).toBe(true)
+    expect(envelope.lateralTransitionFloor).toBe(5)
+    expect(envelope.sideSetbackApplied).toBe(4)
+  })
+
+  it('does not apply ECOS lateral setback before the ECOS onset height', () => {
+    const envelope = computeNormativeEnvelope({
+      ...DEFAULT_PARAMS,
+      floors: 5,
+      floorHeight: 3,
+      ecosMode: true,
+    })
+
+    expect(envelope.totalHeight).toBe(15)
+    expect(envelope.upperHeight).toBe(0)
+    expect(envelope.upperFloorEquivalent).toBe(0)
+    expect(envelope.lateralOnsetCutsFloor).toBe(false)
+    expect(envelope.sideSetbackApplied).toBe(0)
+  })
+
   it('derives total height from floors and floor height', () => {
     const envelope = computeNormativeEnvelope({
       ...DEFAULT_PARAMS,

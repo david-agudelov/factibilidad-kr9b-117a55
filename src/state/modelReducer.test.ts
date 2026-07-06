@@ -28,4 +28,15 @@ describe('resolveParamsForLiveModel', () => {
     expect(result.floorLimit.maxFloors).toBe(7)
     expect(result.envelope.totalHeight).toBe(24.5)
   })
+
+  it('clamps floor height to the minimum live-model height', () => {
+    const result = resolveParamsForLiveModel({
+      ...DEFAULT_PARAMS,
+      floorHeight: 2.1,
+    })
+
+    expect(result.params.floorHeight).toBe(2.3)
+    expect(result.envelope.totalHeight).toBe(11.5)
+    expect(result.adjustmentMessages.join(' ')).toContain('Altura entre pisos ajustada')
+  })
 })

@@ -1,7 +1,6 @@
 import type { ModelGeometry, ModelParams, NormativeEnvelope, Point } from '../model/types'
 import { polygonToSvgPoints } from '../geometry/buildPolygon'
 import { SITE_CONSTANTS } from '../model/projectSource'
-import { ViewStatsCard } from './ViewStatsCard'
 import {
   SHARED_VIEW_FRAME_CLASS,
   SHARED_VIEW_SCALE,
@@ -49,7 +48,6 @@ export function PolygonViewport2D({ envelope, geometry, params }: PolygonViewpor
 
   return (
     <div className="overflow-auto bg-slate-50">
-      <ViewStatsCard envelope={envelope} params={params} />
       <svg
         aria-label="Vista 2D del polígono y footprints"
         className={SHARED_VIEW_FRAME_CLASS}
@@ -84,7 +82,7 @@ export function PolygonViewport2D({ envelope, geometry, params }: PolygonViewpor
             points={geometry.lowerFootprint}
             scale={scale}
           />
-          {geometry.upperFloors > 0 && (
+          {geometry.upperHeight > 0 && (
             <SvgPolygon
               className="fill-sky-300/45 stroke-sky-800 stroke-[0.1]"
               points={geometry.upperFootprint}
@@ -100,7 +98,7 @@ export function PolygonViewport2D({ envelope, geometry, params }: PolygonViewpor
           >
             Aislamiento posterior: {formatNumber(geometry.effectiveRearSetback)} m
           </text>
-          {geometry.upperFloors > 0 && geometry.upperFootprint[0]?.x > 0 && (
+          {geometry.upperHeight > 0 && geometry.upperFootprint[0]?.x > 0 && (
             <text
               fill="#0f766e"
               fontSize={VIEWPORT_SCALE.labelFontSize}

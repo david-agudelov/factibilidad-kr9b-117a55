@@ -1,0 +1,480 @@
+{
+  "parcelId": "KR9B_117A55",
+  "caseId": "KR9B_117A55",
+  "resolvedFrom": {
+    "kind": "address",
+    "value": "KR 9B #117A-55",
+    "confidence": "high"
+  },
+  "generatedAt": "2026-07-06T01:32:05.823407+00:00",
+  "spatialReference": "EPSG:4686",
+  "parcel": {
+    "address": "KR 9B #117A-55",
+    "lotCode": "008415053027",
+    "frontPoint": {
+      "x": -74.03494603000001,
+      "y": 4.696439515154202
+    },
+    "centroid": {
+      "x": -74.03506977833872,
+      "y": 4.696509265259457
+    }
+  },
+  "facts": [
+    {
+      "id": "placa_domiciliaria_bogota",
+      "label": "Placa domiciliaria",
+      "value": "KR 9B 117A 55",
+      "sourceId": "placa_domiciliaria_bogota",
+      "matched": true,
+      "method": "address_resolution",
+      "attributes": {
+        "OBJECTID": 29855832,
+        "PDOCODIGO": "AAA0104RDYNPD01",
+        "PDOTEXTO": "117A 55",
+        "PDOCINTERI": null,
+        "PDOANGULO": 334.8407,
+        "PDONVIAL": "KR 9B",
+        "PDOCLOTE": "008415053027",
+        "PDOTIPO": 1
+      },
+      "geometryRelation": {
+        "frontPoint": {
+          "x": -74.03494603000001,
+          "y": 4.696439515154202
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/placa-domiciliaria",
+      "dataDate": "2026-05-31",
+      "confidence": "high"
+    },
+    {
+      "id": "lote_bogota",
+      "label": "Lote catastral",
+      "value": "008415053027",
+      "sourceId": "lote_bogota",
+      "matched": true,
+      "method": "lot_lookup",
+      "attributes": {
+        "OBJECTID": 16947628,
+        "LOTCODIGO": "008415053027",
+        "LOTDISPERS": "N",
+        "LOTILDISPE": null,
+        "LOTUPREDIA": 1,
+        "MANZCODIGO": "008415053",
+        "LOTDISTRIT": 0,
+        "SHAPE.AREA": 2.6564980890000004e-08,
+        "SHAPE.LEN": 0.000687329792903587
+      },
+      "geometryRelation": {
+        "centroid": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/lote",
+      "dataDate": "2026-05-31",
+      "confidence": "high"
+    },
+    {
+      "id": "predios_bogota",
+      "label": "Predios. Bogotá D.C.",
+      "value": "No calculado",
+      "sourceId": "predios_bogota",
+      "matched": false,
+      "method": "not_computed",
+      "attributes": {
+        "notes": "The public predios layer did not return a reliable spatial match for KR9B in V2.1. Keep blocked until CHIP or a stable cadastral join is available."
+      },
+      "geometryRelation": {
+        "centroid": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/predios-bogota",
+      "dataDate": "2026-05-31",
+      "confidence": "low"
+    },
+    {
+      "id": "tratamiento_urbanistico_pot",
+      "label": "Tratamiento urbanístico. POT Bogotá D.C.",
+      "value": "Renovación",
+      "sourceId": "tratamiento_urbanistico_pot",
+      "matched": true,
+      "method": "centroid_within",
+      "attributes": {
+        "OBJECTID": 43498,
+        "CODIGO_ID": "1200",
+        "CODIGO_TRATAMIENTO": "4",
+        "NOMBRE_TRATAMIENTO": "Renovación",
+        "TIPOLOGIA": " ",
+        "ALTURA_MAXIMA": " ",
+        "ACTO_ADMINISTRATIVO": "DEC",
+        "NUMERO_ACTO_ADMINISTRATIVO": "555",
+        "FECHA_ACTO_ADMINISTRATIVO": 1640736000000,
+        "NORMATIVA": "En el marco del Decreto 555 del 29 de diciembre de 2021 - Por el cual se adopta la revisión general del Plan de Ordenamiento Territorial de Bogotá",
+        "CÓDIGO_SUBTRATAMIENTO": "No Aplica",
+        "OBSERVACION": null,
+        "ESCALA_CAPTURA": null,
+        "FECHA_CAPTURA": 1640736000000,
+        "RESPONSABLE": "553",
+        "REGLAID": 4,
+        "SHAPE.AREA": 43898.04351925,
+        "SHAPE.LEN": 838.4446966440461
+      },
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/tratamiento-urbanistico-bogota-d-c",
+      "dataDate": "2026-03-31",
+      "confidence": "high"
+    },
+    {
+      "id": "area_actividad_pot",
+      "label": "Área actividad - POT Bogotá D.C.",
+      "value": "Área de Actividad Estructurante - AAE - Receptora de vivienda de interés social",
+      "sourceId": "area_actividad_pot",
+      "matched": true,
+      "method": "centroid_within",
+      "attributes": {
+        "OBJECTID": 3316,
+        "CODIGO_ID": "1036",
+        "CODIGO_AREA_ACTIVIDAD": "AAERVIS",
+        "NOMBRE_AREA_ACTIVIDAD": "Área de Actividad Estructurante - AAE - Receptora de vivienda de interés social",
+        "ACTO_ADMINISTRATIVO": "DEC",
+        "NUMERO_ACTO_ADMINISTRATIVO": "555",
+        "FECHA_ACTO_ADMINISTRATIVO": 1640736000000,
+        "NORMATIVA": "En el marco del Decreto 555 del 29 de diciembre de 2021 - Por el cual se adopta la revisión general del Plan de Ordenamiento Territorial de Bogotá",
+        "OBSERVACION": "Por el cual se adopta la revisión general del Plan de Ordenamiento Territorial de Bogotá D.C.",
+        "ESCALA_CAPTURA": "2000",
+        "FECHA_CAPTURA": 1640736000000,
+        "RESPONSABLE": "553",
+        "RULEID": 3,
+        "OVERRIDE": null,
+        "SHAPE.AREA": 535829.19875525,
+        "SHAPE.LEN": 4684.80624172901
+      },
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/area-actividad-bogota-d-c",
+      "dataDate": "2026-02-03",
+      "confidence": "high"
+    },
+    {
+      "id": "antejardin_pot",
+      "label": "Antejardín. POT Bogotá D.C.",
+      "value": "0",
+      "sourceId": "antejardin_pot",
+      "matched": true,
+      "method": "centroid_within",
+      "attributes": {
+        "OBJECTID": 71247,
+        "CODIGO_ID": "15486",
+        "DIMENSION": "0",
+        "NOTA": "N/A",
+        "OBSERVACION": "N/A",
+        "ACTO_ADMINISTRATIVO": "RES",
+        "NUMERO_ACTO_ADMINISTRATIVO": "1631",
+        "FECHA_ACTO_ADMINISTRATIVO": 1689724800000,
+        "NORMATIVA": "En el marco del Decreto 555 del 29 de diciembre de 2021 - Por el cual se adopta la revisión general del Plan de Ordenamiento Territorial de Bogotá",
+        "ESCALA_CAPTURA": null,
+        "FECHA_CAPTURA": 1689724800000,
+        "RESPONSABLE": "623",
+        "TRATAMIENTO": "RENOVACION",
+        "POSIBLE_OCUPACION_ANTEJARDIN": "N/A",
+        "DIFERENCIA_DIMENSION2021_2023": "N/A",
+        "SHAPE.AREA": 43898.04053392,
+        "SHAPE.LEN": 838.444695164429
+      },
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/antejardin-bogota-d-c",
+      "dataDate": "2023-08-02",
+      "confidence": "high"
+    },
+    {
+      "id": "plan_parcial_pot",
+      "label": "Plan parcial. POT Bogotá D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "plan_parcial_pot",
+      "matched": false,
+      "method": "centroid_within",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/plan-parcial-bogota-d-c1",
+      "dataDate": "2026-06-24",
+      "confidence": "medium"
+    },
+    {
+      "id": "suelo_reserva_pot",
+      "label": "Suelo Reserva. POT Bogotá D.C.",
+      "value": "No calculado",
+      "sourceId": "suelo_reserva_pot",
+      "matched": false,
+      "method": "not_computed",
+      "attributes": {
+        "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON clipping is implemented."
+      },
+      "geometryRelation": {
+        "centroid": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/suelo-reserva-bogota-d-c",
+      "dataDate": "2026-05-26",
+      "confidence": "low"
+    },
+    {
+      "id": "red_infraestructura_vial_pot",
+      "label": "Red infraestructura vial. POT Bogotá D.C.",
+      "value": "No calculado",
+      "sourceId": "red_infraestructura_vial_pot",
+      "matched": false,
+      "method": "not_computed",
+      "attributes": {
+        "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON/nearest-edge processing is implemented."
+      },
+      "geometryRelation": {
+        "centroid": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/red-infraestructura-vial-bogota-d-c",
+      "dataDate": "2026-05-26",
+      "confidence": "low"
+    },
+    {
+      "id": "eep_sistema_hidrico_pot",
+      "label": "EEP - Sistema hídrico. POT Bogotá D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "eep_sistema_hidrico_pot",
+      "matched": false,
+      "method": "centroid_within",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/eep-sistema-hidrico-bogota-d-c",
+      "dataDate": "2026-05-15",
+      "confidence": "medium"
+    },
+    {
+      "id": "suelo_proteccion_riesgo_pot",
+      "label": "Suelo de protección por riesgo. POT Bogotá D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "suelo_proteccion_riesgo_pot",
+      "matched": false,
+      "method": "centroid_within",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/suelo-de-proteccion-por-riesgo-bogota-d-c",
+      "dataDate": "2026-02-03",
+      "confidence": "medium"
+    },
+    {
+      "id": "bic_zona_influencia_pot",
+      "label": "Zona influencia BIC SIU PEMP. POT Bogotá D.C.",
+      "value": "No calculado",
+      "sourceId": "bic_zona_influencia_pot",
+      "matched": false,
+      "method": "not_computed",
+      "attributes": {
+        "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON clipping is implemented."
+      },
+      "geometryRelation": {
+        "centroid": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/zona-influencia-bic-sic-pemp-bogota-d-c",
+      "dataDate": "2026-01-28",
+      "confidence": "low"
+    },
+    {
+      "id": "bic_bien_interes_cultural_pot",
+      "label": "Bien interés cultural - BIC. POT Bogotá D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "bic_bien_interes_cultural_pot",
+      "matched": false,
+      "method": "centroid_within",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/?_tags_limit=0&groups=ordenamiento-territorial&res_format=GeoJSON&tags=Patrimonio+Cultural",
+      "dataDate": "2026-04-29",
+      "confidence": "medium"
+    },
+    {
+      "id": "area_elevacion_maxima_pot",
+      "label": "Área elevación máxima. POT Bogotá D.C.",
+      "value": "No calculado",
+      "sourceId": "area_elevacion_maxima_pot",
+      "matched": false,
+      "method": "not_computed",
+      "attributes": {
+        "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON clipping is implemented."
+      },
+      "geometryRelation": {
+        "centroid": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/area-elevacion-maxima-bogota-d-c",
+      "dataDate": "2022-09-19",
+      "confidence": "low"
+    },
+    {
+      "id": "aeropuerto_influencia_indirecta_pot",
+      "label": "Área de influencia indirecta del Aeropuerto El Dorado. POT Bogotá D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "aeropuerto_influencia_indirecta_pot",
+      "matched": false,
+      "method": "centroid_within",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03506977833872,
+          "y": 4.696509265259457
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/area-de-influencia-indirecta-del-aeropuerto-el-dorado-bogota-d-c",
+      "dataDate": "2022-09-19",
+      "confidence": "medium"
+    },
+    {
+      "id": "idu_anden_bogota",
+      "label": "Anden. Bogota D.C.",
+      "value": "492",
+      "sourceId": "idu_anden_bogota",
+      "matched": true,
+      "method": "front_point_intersects",
+      "attributes": {
+        "ANDCODIGO": 492,
+        "ANDCIV": 1005100,
+        "ANDMATERIA": 1,
+        "OBJECTID": 869734
+      },
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03494603000001,
+          "y": 4.696439515154202
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/anden-bogota-d-c",
+      "dataDate": "2026-04-24",
+      "confidence": "high"
+    },
+    {
+      "id": "idu_calzada_bogota",
+      "label": "Calzada. Bogota D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "idu_calzada_bogota",
+      "matched": false,
+      "method": "front_point_intersects",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03494603000001,
+          "y": 4.696439515154202
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/calzada-bogota-d-c",
+      "dataDate": "2026-04-24",
+      "confidence": "medium"
+    },
+    {
+      "id": "idu_separador_bogota",
+      "label": "Separador. Bogota D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "idu_separador_bogota",
+      "matched": false,
+      "method": "front_point_intersects",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03494603000001,
+          "y": 4.696439515154202
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/separador-bogota-d-c",
+      "dataDate": "2026-04-24",
+      "confidence": "medium"
+    },
+    {
+      "id": "idu_cicloruta_bogota",
+      "label": "Ciclorruta. Bogota D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "idu_cicloruta_bogota",
+      "matched": false,
+      "method": "front_point_intersects",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03494603000001,
+          "y": 4.696439515154202
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/cicloruta-bogota-d-c",
+      "dataDate": "2026-04-24",
+      "confidence": "medium"
+    },
+    {
+      "id": "idu_puente_bogota",
+      "label": "Puente. Bogota D.C.",
+      "value": "Sin coincidencia",
+      "sourceId": "idu_puente_bogota",
+      "matched": false,
+      "method": "front_point_intersects",
+      "attributes": {},
+      "geometryRelation": {
+        "queryPoint": {
+          "x": -74.03494603000001,
+          "y": 4.696439515154202
+        }
+      },
+      "sourceUrl": "https://datosabiertos.bogota.gov.co/dataset/puente-bogota-d-c",
+      "dataDate": "2026-04-24",
+      "confidence": "medium"
+    }
+  ],
+  "warnings": [
+    "predios_bogota: overlay not computed in V2.1.",
+    "suelo_reserva_pot: overlay not computed in V2.1.",
+    "red_infraestructura_vial_pot: overlay not computed in V2.1.",
+    "bic_zona_influencia_pot: overlay not computed in V2.1.",
+    "area_elevacion_maxima_pot: overlay not computed in V2.1."
+  ]
+}

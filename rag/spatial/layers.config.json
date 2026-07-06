@@ -1,0 +1,129 @@
+{
+  "caseId": "KR9B_117A55",
+  "address": "KR 9B #117A-55",
+  "spatialReference": "EPSG:4686",
+  "resolution": {
+    "addressPoint": {
+      "sourceId": "placa_domiciliaria_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/catastro/placadomiciliaria/MapServer/0",
+      "where": "PDONVIAL = 'KR 9B' AND PDOTEXTO = '117A 55'",
+      "valueField": "PDOTEXTO"
+    },
+    "lot": {
+      "sourceId": "lote_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/catastro/lote/MapServer/0",
+      "whereTemplate": "LOTCODIGO = '{lotCode}'",
+      "valueField": "LOTCODIGO"
+    }
+  },
+  "layers": [
+    {
+      "sourceId": "predios_bogota",
+      "method": "not_computed",
+      "valueFields": ["CHIP", "CODIGO", "COD_LOTE", "LOTCODIGO"],
+      "notes": "The public predios layer did not return a reliable spatial match for KR9B in V2.1. Keep blocked until CHIP or a stable cadastral join is available."
+    },
+    {
+      "sourceId": "tratamiento_urbanistico_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/NORMA_URBAN%C3%8DSTICA_Y_OT/MapServer/2",
+      "method": "centroid_within",
+      "valueFields": ["NOMBRE_TRATAMIENTO", "CODIGO_TRATAMIENTO", "TIPOLOGIA"]
+    },
+    {
+      "sourceId": "area_actividad_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/NORMA_URBAN%C3%8DSTICA_Y_OT/MapServer/9",
+      "method": "centroid_within",
+      "valueFields": ["NOMBRE_AREA_ACTIVIDAD", "CODIGO_AREA_ACTIVIDAD"]
+    },
+    {
+      "sourceId": "antejardin_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/NORMA_URBAN%C3%8DSTICA_Y_OT/MapServer/20",
+      "method": "centroid_within",
+      "valueFields": ["DIMENSION", "TRATAMIENTO", "POSIBLE_OCUPACION_ANTEJARDIN"]
+    },
+    {
+      "sourceId": "plan_parcial_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/NORMA_URBAN%C3%8DSTICA_Y_OT/MapServer/25",
+      "method": "centroid_within",
+      "valueFields": ["NOMBRE", "NOMBRE_PLAN", "PLAN_PARCIAL", "CODIGO_ID"]
+    },
+    {
+      "sourceId": "suelo_reserva_pot",
+      "method": "not_computed",
+      "valueFields": ["NOMBRE", "TIPO", "CODIGO_ID"],
+      "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON clipping is implemented."
+    },
+    {
+      "sourceId": "red_infraestructura_vial_pot",
+      "method": "not_computed",
+      "valueFields": ["NOMBRE", "TIPO", "CODIGO_ID"],
+      "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON/nearest-edge processing is implemented."
+    },
+    {
+      "sourceId": "eep_sistema_hidrico_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/ESTRUCTURA_ECOLOGICA_PRINCIPAL/MapServer/3",
+      "method": "centroid_within",
+      "valueFields": ["NOMBRE", "TIPO", "CODIGO_ID"]
+    },
+    {
+      "sourceId": "suelo_proteccion_riesgo_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/AMENAZAS_Y_RIESGOS/MapServer/61",
+      "method": "centroid_within",
+      "valueFields": ["AMENAZA", "TIPO", "CATEGORIA", "CODIGO_ID"]
+    },
+    {
+      "sourceId": "bic_zona_influencia_pot",
+      "method": "not_computed",
+      "valueFields": ["NOMBRE", "TIPO", "CODIGO_ID"],
+      "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON clipping is implemented."
+    },
+    {
+      "sourceId": "bic_bien_interes_cultural_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/ESTRUCTURA_INTEGRADORES_DE_PATRIMONIO/MapServer/2",
+      "method": "centroid_within",
+      "valueFields": ["NOMBRE", "NOMBRE_BIC", "CODIGO_ID"]
+    },
+    {
+      "sourceId": "area_elevacion_maxima_pot",
+      "method": "not_computed",
+      "valueFields": ["ELEVACION", "ALTURA", "CODIGO_ID"],
+      "notes": "No REST endpoint was exposed in CKAN metadata during V2.1; keep as missing until GeoJSON clipping is implemented."
+    },
+    {
+      "sourceId": "aeropuerto_influencia_indirecta_pot",
+      "restUrl": "https://serviciosg.sdp.gov.co/server/rest/services/POT555/NORMA_URBAN%C3%8DSTICA_Y_OT/MapServer/8",
+      "method": "centroid_within",
+      "valueFields": ["NOMBRE", "TIPO", "CODIGO_ID"]
+    },
+    {
+      "sourceId": "idu_anden_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/Mapa_Referencia/Mapa_Referencia/MapServer/16",
+      "method": "front_point_intersects",
+      "valueFields": ["TIPO", "ESTADO", "CODIGO"]
+    },
+    {
+      "sourceId": "idu_calzada_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/Mapa_Referencia/Mapa_Referencia/MapServer/15",
+      "method": "front_point_intersects",
+      "valueFields": ["TIPO", "ESTADO", "CODIGO"]
+    },
+    {
+      "sourceId": "idu_separador_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/Mapa_Referencia/Mapa_Referencia/MapServer/17",
+      "method": "front_point_intersects",
+      "valueFields": ["TIPO", "ESTADO", "CODIGO"]
+    },
+    {
+      "sourceId": "idu_cicloruta_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/Mapa_Referencia/Mapa_Referencia/MapServer/18",
+      "method": "front_point_intersects",
+      "valueFields": ["TIPO", "ESTADO", "CODIGO"]
+    },
+    {
+      "sourceId": "idu_puente_bogota",
+      "restUrl": "https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/Mapa_Referencia/Mapa_Referencia/MapServer/14",
+      "method": "front_point_intersects",
+      "valueFields": ["TIPO", "ESTADO", "CODIGO"]
+    }
+  ]
+}

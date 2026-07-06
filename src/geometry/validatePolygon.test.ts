@@ -9,7 +9,8 @@ describe('validatePolygon', () => {
     const validation = validatePolygon(geometry, DEFAULT_PARAMS)
 
     expect(validation.isValid).toBe(true)
-    expect(validation.severity).toBe('ok')
+    expect(validation.severity).toBe('warning')
+    expect(validation.messages.join(' ')).toContain('piso 4')
   })
 
   it('flags heights above the preliminary PDF envelope without throwing', () => {
@@ -23,6 +24,22 @@ describe('validatePolygon', () => {
 
     expect(validation.isValid).toBe(false)
     expect(validation.messages.join(' ')).toContain('27 m')
+  })
+
+  it('marks threshold crossings inside a floor as conditioned warnings', () => {
+    const params = {
+      ...DEFAULT_PARAMS,
+      floors: 4,
+      floorHeight: 3,
+      ecosMode: false,
+    }
+    const geometry = buildPolygon(params)
+    const validation = validatePolygon(geometry, params)
+
+    expect(validation.isValid).toBe(true)
+    expect(validation.severity).toBe('warning')
+    expect(validation.messages.join(' ')).toContain('piso 4')
+    expect(validation.messages.join(' ')).toContain('piso completo se modela con aislamiento')
   })
 
   it('detects self-intersecting polygons', () => {

@@ -38,28 +38,6 @@ export function PdfScenarioPanel({ comparison }: PdfScenarioPanelProps) {
         Estado: {statusLabel(comparison.status)}.
       </p>
 
-      <div className="mt-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-700">
-        <p>
-          Altura total actual:{' '}
-          {formatNumber(comparison.ruleChecks.totalHeight.actual)}{' '}
-          {comparison.ruleChecks.totalHeight.unit}.
-        </p>
-        <p>
-          Posterior PDF aplicado:{' '}
-          {formatNumber(comparison.ruleChecks.rearSetback.actual)}{' '}
-          {comparison.ruleChecks.rearSetback.unit}.
-        </p>
-        <p>
-          Lateral desde:{' '}
-          {formatNumber(comparison.ruleChecks.lateralOnset.actual)}{' '}
-          {comparison.ruleChecks.lateralOnset.unit}.
-        </p>
-        <p>
-          Margen ICe: {formatNumber(comparison.ruleChecks.iceMargin.actual)}{' '}
-          {comparison.ruleChecks.iceMargin.unit}.
-        </p>
-      </div>
-
       {reference && (
         <div className="mt-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-700">
           <p className="font-semibold text-slate-950">Referencia cercana del PDF</p>

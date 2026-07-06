@@ -32,18 +32,10 @@ export function SliderPanel({
   setParam,
   sliders,
 }: SliderPanelProps) {
-  const totalHeight = params.floors * params.floorHeight
-
   return (
     <aside className="rounded-md border border-slate-200 bg-white">
       <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
         <h2 className="text-base font-semibold text-slate-950">Parametros parametricos</h2>
-        <p className="mt-1 text-xs leading-5 text-slate-500">
-          Pisos: {params.floors} / {floorLimit.maxFloors} maximo preliminar.
-        </p>
-        <p className="mt-1 text-xs font-semibold leading-5 text-amber-700">
-          Altura total: {formatNumber(totalHeight)} m
-        </p>
       </div>
 
       <div className="space-y-3 p-3">
@@ -57,19 +49,6 @@ export function SliderPanel({
           <p>
             ICe {SITE_CONSTANTS.iceIndex.toFixed(1)} ={' '}
             {formatNumber(SITE_CONSTANTS.area * SITE_CONSTANTS.iceIndex)} m2
-          </p>
-          <p className="mt-2 text-slate-500">
-            Fuente:{' '}
-            <a
-                className="font-medium text-slate-800 underline decoration-slate-300 underline-offset-2 transition hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-slate-700"
-              href={SITE_CONSTANTS.source.publicHref}
-              rel="noreferrer"
-              target="_blank"
-            >
-              factibilidad_KR9B_117A55.pdf
-            </a>
-            , paginas{' '}
-            {SITE_CONSTANTS.source.pages.join(', ')}.
           </p>
         </section>
 

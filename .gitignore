@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# RAG generated corpora and downloaded source files
+rag/raw/
+rag/processed/
+cloudflare-worker/.dev.vars
+cloudflare-worker/.dev.vars.*
+!cloudflare-worker/.dev.vars.example
+cloudflare-worker/.wrangler/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

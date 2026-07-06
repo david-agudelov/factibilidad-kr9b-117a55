@@ -53,6 +53,12 @@ export function buildPolygon(params: ModelParams): ModelGeometry {
     boundingBox: boundingBox(lot),
     effectiveRearSetback: envelope.rearSetback,
     lateralOnsetHeight: envelope.lateralOnsetHeight,
+    lowerHeight: envelope.lowerHeight,
+    upperHeight: envelope.upperHeight,
+    lowerFloorEquivalent: envelope.lowerFloorEquivalent,
+    upperFloorEquivalent: envelope.upperFloorEquivalent,
+    lateralOnsetCutsFloor: envelope.lateralOnsetCutsFloor,
+    lateralTransitionFloor: envelope.lateralTransitionFloor,
     lowerFloors: envelope.lowerFloors,
     upperFloors: envelope.upperFloors,
     grossLowerFootprintArea,
@@ -60,8 +66,8 @@ export function buildPolygon(params: ModelParams): ModelGeometry {
     netLowerFootprintArea,
     netUpperFootprintArea,
     builtArea: roundTo(
-      envelope.lowerFloors * netLowerFootprintArea +
-        envelope.upperFloors * netUpperFootprintArea,
+      envelope.lowerFloorEquivalent * netLowerFootprintArea +
+        envelope.upperFloorEquivalent * netUpperFootprintArea,
       2,
     ),
   }

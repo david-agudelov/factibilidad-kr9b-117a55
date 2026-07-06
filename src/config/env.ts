@@ -4,6 +4,8 @@ type EnvConfig = {
   locale: string
   units: 'metric'
   enableEcosMode: boolean
+  ragEnabled: boolean
+  ragEndpoint: string
 }
 
 function readEnvFlag(value: string | undefined, fallback: boolean) {
@@ -17,4 +19,6 @@ export const envConfig: EnvConfig = {
   locale: import.meta.env.VITE_APP_LOCALE ?? 'es-CO',
   units: 'metric',
   enableEcosMode: readEnvFlag(import.meta.env.VITE_ENABLE_ECOS_MODE, true),
+  ragEnabled: readEnvFlag(import.meta.env.VITE_RAG_ENABLED, true),
+  ragEndpoint: import.meta.env.VITE_RAG_ENDPOINT ?? '/api/normative-chat',
 }

@@ -2,6 +2,7 @@ import {
   computeFloorLimit,
   computeNormativeEnvelope,
 } from '../norms/computeFloorLimit'
+import { NORMATIVE_RULES } from '../model/projectSource'
 import type { FloorLimit, ModelParams, NormativeEnvelope } from '../model/types'
 
 export type ResolvedModelState = {
@@ -20,7 +21,15 @@ function clamp(value: number, min: number, max: number) {
 }
 
 export function resolveParamsForLiveModel(params: ModelParams): ResolvedModelState {
-  let floorLimit = computeFloorLimit(params)
+  const nextFloorHeight = Math.max(
+    params.floorHeight,
+    NORMATIVE_RULES.minFloorHeight,
+  )
+  const heightResolvedParams = {
+    ...params,
+    floorHeight: nextFloorHeight,
+  }
+  let floorLimit = computeFloorLimit(heightResolvedParams)
   const flooredValue = Math.round(params.floors)
   const nextFloors = clamp(
     flooredValue,
@@ -30,8 +39,14 @@ export function resolveParamsForLiveModel(params: ModelParams): ResolvedModelSta
   const adjustmentMessages: string[] = []
 
   const resolvedParams = {
-    ...params,
+    ...heightResolvedParams,
     floors: nextFloors,
+  }
+
+  if (nextFloorHeight !== params.floorHeight) {
+    adjustmentMessages.push(
+      `Altura entre pisos ajustada a ${nextFloorHeight.toFixed(2)} m por minimo operativo del modelo.`,
+    )
   }
 
   if (nextFloors !== params.floors) {

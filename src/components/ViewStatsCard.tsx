@@ -14,16 +14,6 @@ function formatNumber(value: number) {
 
 const stats = [
   {
-    id: 'floors',
-    label: 'Pisos',
-    value: ({ params }: ViewStatsCardProps) => params.floors.toString(),
-  },
-  {
-    id: 'floor-height',
-    label: 'Altura entre pisos',
-    value: ({ params }: ViewStatsCardProps) => `${formatNumber(params.floorHeight)} m`,
-  },
-  {
     id: 'total-height',
     label: 'Altura total',
     value: ({ envelope }: ViewStatsCardProps) => `${formatNumber(envelope.totalHeight)} m`,
@@ -44,7 +34,10 @@ export function ViewStatsCard({ envelope, params }: ViewStatsCardProps) {
   const props = { envelope, params }
 
   return (
-    <dl className="grid gap-2 border-b border-slate-200 bg-white p-3 text-xs sm:grid-cols-5">
+    <dl
+      className="grid gap-2 border-b border-slate-200 bg-white p-3 text-xs sm:grid-cols-3"
+      data-testid="view-stats-card"
+    >
       {stats.map((stat) => (
         <div
           className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2"

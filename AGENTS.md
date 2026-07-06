@@ -337,3 +337,69 @@ Antes de dar por terminado cualquier cambio:
 - La geometria debe conectarse siempre con una logica arquitectonica: norma, constructibilidad, area, ocupacion y documentacion.
 - Evitar "forma por forma". Cada control debe tener una razon normativa o de factibilidad.
 - Si una regla no esta confirmada, mostrarla como pendiente o supuesto, no como derecho adquirido.
+
+## Fase v2 - Agentic RAG normativo-predial
+
+1. El RAG debe ser server-side.
+2. Nunca exponer `OPENAI_API_KEY`, `OPENAI_VECTOR_STORE_ID` ni secretos en frontend.
+3. No usar variables `VITE_*` para secretos.
+4. El chatbot solo puede responder con base en:
+   - documentos indexados,
+   - `sources.manifest.json`,
+   - facts geoespaciales producidos por overlays determinísticos.
+5. Toda respuesta normativa debe incluir citas:
+   - documento fuente,
+   - sección, artículo, capítulo o tabla si existe,
+   - URL oficial,
+   - fecha o versión,
+   - nivel de confianza.
+6. Toda respuesta predial debe diferenciar:
+   - hechos espaciales calculados,
+   - interpretación normativa,
+   - advertencias o incertidumbres.
+7. Si no hay soporte documental o espacial suficiente, responder:
+   `"No encontré soporte suficiente en los documentos y datos cargados."`
+8. No inventar artículos, restricciones, alturas, usos, tratamientos ni áreas de actividad.
+9. Separar estrictamente:
+   - UI chat,
+   - cliente API,
+   - endpoint server-side,
+   - prompts,
+   - ingesta documental,
+   - ingesta geoespacial,
+   - manifest de fuentes,
+   - evals.
+10. No mezclar el RAG con `src/norms` ni con motores geométricos existentes.
+11. El RAG explica y cita; no reemplaza el motor normativo determinístico.
+12. Los overlays espaciales deben vivir en una capa separada, por ejemplo `src/spatial` o `rag/spatial`.
+13. Toda fuente debe declararse en `rag/sources/sources.manifest.json`.
+14. Cada fuente debe guardar:
+   - `id`,
+   - `title`,
+   - `authority`,
+   - `officialUrl`,
+   - `sourceDomain`,
+   - `sourceFamily`,
+   - `type`,
+   - `legalStatus`,
+   - `effectiveDate`,
+   - `versionDate`,
+   - `dataDate`,
+   - `metadataUpdatedAt`,
+   - `spatialReference`,
+   - `formats`,
+   - `localPath`,
+   - `checksum`,
+   - `ingestedAt`,
+   - `priority`,
+   - `notes`.
+15. No usar fuentes secundarias como base normativa.
+16. Los actos derogados o compilados solo pueden usarse como provenance, no como fuente legal primaria.
+17. Para Bogotá, tratar el Decreto 670 de 2025 como fuente legal primaria si el manifest lo marca vigente.
+18. Tratar manuales/anexos como fuentes operativas.
+19. Tratar datasets vectoriales como fuentes espaciales, no como textos para embeddings.
+20. Todo cambio debe pasar:
+   - `npm test`
+   - `npm run lint`
+   - `npm run build`
+21. Si afecta UI, verificar desktop/mobile y ausencia de overflow horizontal.

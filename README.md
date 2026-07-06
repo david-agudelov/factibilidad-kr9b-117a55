@@ -42,10 +42,27 @@ docs/
 
 ## Environment
 
-No environment variable is required for v1. Optional local overrides can be copied from:
+No secret is required in the frontend. Optional local overrides can be copied from:
 
 ```powershell
 Copy-Item .env.example .env.local
+```
+
+RAG v2 public frontend flags:
+
+```text
+VITE_RAG_ENABLED=true
+VITE_RAG_ENDPOINT=/api/normative-chat
+```
+
+RAG v2 server-only variables must never use `VITE_*`:
+
+```text
+OPENAI_API_KEY
+OPENAI_VECTOR_STORE_ID
+RAG_MODEL
+RAG_SOURCE_MANIFEST_PATH
+RAG_SPATIAL_FACTS_PATH
 ```
 
 ## Install
@@ -75,6 +92,46 @@ npm test
 npm run lint
 npm run build
 ```
+
+RAG v2 local validation helpers:
+
+```powershell
+node scripts/rag/validateManifest.ts
+node scripts/spatial/buildParcelFacts.ts KR9B_117A55
+node scripts/rag/ingestDocuments.ts
+```
+
+## Probar RAG con Cloudflare Workers
+
+El frontend React nunca debe recibir claves secretas. Para probar el backend RAG
+en Cloudflare Workers:
+
+```powershell
+npm.cmd run cf:build:data
+Copy-Item cloudflare-worker/.dev.vars.example cloudflare-worker/.dev.vars
+npx.cmd wrangler login
+npm.cmd run cf:dev
+```
+
+En otra terminal, apunta Vite al Worker local:
+
+```powershell
+$env:VITE_RAG_ENABLED="true"
+$env:VITE_RAG_ENDPOINT="http://localhost:8787/api/normative-chat"
+npm.cmd run dev
+```
+
+Los secretos server-side viven en `cloudflare-worker/.dev.vars` para desarrollo
+local y en Cloudflare Workers Secrets para producción:
+
+```powershell
+npx.cmd wrangler secret put OPENAI_API_KEY --config cloudflare-worker/wrangler.jsonc
+npx.cmd wrangler secret put OPENAI_VECTOR_STORE_ID --config cloudflare-worker/wrangler.jsonc
+```
+
+Para el MVP con Cloudflare, usa `RAG_PROVIDER=cloudflare`. Para migrar luego a
+OpenAI File Search, cambia a `RAG_PROVIDER=openai` y configura los secretos
+`OPENAI_API_KEY` y `OPENAI_VECTOR_STORE_ID`.
 
 ## Migrations
 

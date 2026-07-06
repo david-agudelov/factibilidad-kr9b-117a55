@@ -3,6 +3,7 @@ import type { ModelParams } from './types'
 import { DEFAULT_CORE_OPTION } from '../config/coreOptions'
 
 export const CASE_INFO = {
+  caseId: SITE_CONSTANTS.caseId,
   name: SITE_CONSTANTS.name,
   location: SITE_CONSTANTS.location,
   sourcePdf: SITE_CONSTANTS.source.document,
@@ -23,6 +24,7 @@ export const NORMATIVE_LIMITS = {
   preliminaryMaxHeight: NORMATIVE_RULES.preliminaryMaxHeight,
   baseLateralOnsetHeight: NORMATIVE_RULES.baseLateralOnsetHeight,
   ecosLateralOnsetHeight: NORMATIVE_RULES.ecosLateralOnsetHeight,
+  minFloorHeight: NORMATIVE_RULES.minFloorHeight,
   minSideSetback: NORMATIVE_RULES.minSideSetback,
   minUsefulUpperWidth: NORMATIVE_RULES.minUsefulUpperWidth,
 }

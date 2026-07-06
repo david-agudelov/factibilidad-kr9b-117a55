@@ -365,7 +365,7 @@ export function MetricsPanel({ metrics }: MetricsPanelProps) {
     }),
   }
 
-  const areaMetrics = [builtArea, usableArea, sellableArea].filter(Boolean) as MetricItem[]
+  const areaMetrics = [usableArea, sellableArea].filter(Boolean) as MetricItem[]
 
   return (
     <section className="overflow-visible rounded-md border border-slate-200 bg-white">

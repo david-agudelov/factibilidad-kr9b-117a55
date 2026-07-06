@@ -1,4 +1,5 @@
 import type { FloorLimit, ModelParams } from '../model/types'
+import { NORMATIVE_RULES } from '../model/projectSource'
 
 export type SliderDefinition = {
   key: keyof Pick<ModelParams, 'floorHeight' | 'floors'>
@@ -15,7 +16,7 @@ export function getSliderConfig(floorLimit: FloorLimit): SliderDefinition[] {
     {
       key: 'floorHeight',
       label: 'Altura entre pisos',
-      min: 2.3,
+      min: NORMATIVE_RULES.minFloorHeight,
       max: 4,
       step: 0.1,
       unit: 'm',

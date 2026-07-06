@@ -8,7 +8,20 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "rag:download": "node rag/scripts/downloadSources.ts",
+    "rag:prepare:text": "node rag/scripts/prepareTextCorpus.ts",
+    "rag:prepare:spatial": "node rag/scripts/prepareSpatialCorpus.ts",
+    "rag:build:spatial-facts": "node rag/scripts/buildKr9bSpatialFacts.ts",
+    "rag:prepare": "npm run rag:download && npm run rag:prepare:text && npm run rag:prepare:spatial",
+    "rag:evaluate": "node rag/scripts/evaluateRag.ts",
+    "rag:evaluate:normative": "node rag/scripts/evaluateRag.ts --category normative",
+    "rag:evaluate:spatial": "node rag/scripts/evaluateRag.ts --category spatial",
+    "cf:build:data": "node rag/scripts/buildWorkerData.ts",
+    "cf:dev": "wrangler dev --config cloudflare-worker/wrangler.jsonc",
+    "cf:deploy": "wrangler deploy --config cloudflare-worker/wrangler.jsonc",
+    "cf:ingest": "node rag/scripts/ingestCloudflareVectorize.ts",
+    "cf:test": "vitest run cloudflare-worker"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -32,6 +45,7 @@
     "tailwindcss": "^4.3.2",
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.9",
+    "wrangler": "^4.107.0"
   }
 }

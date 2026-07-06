@@ -35,6 +35,7 @@ export const NORMATIVE_RULES = {
   preliminaryMaxHeight: 27,
   baseLateralOnsetHeight: 11.4,
   ecosLateralOnsetHeight: 15.7,
+  minFloorHeight: 2.3,
   minSideSetback: 4,
   minUsefulUpperWidth: 2.4,
   rearSetbackBands: [

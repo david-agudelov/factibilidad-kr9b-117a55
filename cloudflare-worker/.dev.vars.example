@@ -1,0 +1,12 @@
+RAG_PROVIDER=cloudflare
+RAG_ENV=local
+RAG_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+RAG_GENERATION_MODEL=@cf/meta/llama-3.1-8b-instruct-fast
+RAG_EMBEDDING_MODEL=@cf/baai/bge-m3
+RAG_ACTIVE_INGEST_RUN_ID=rag-clean-kr9b-v3
+ADMIN_INGEST_TOKEN=dev-local-token
+
+# Future OpenAI migration. Keep these server-side only.
+# RAG_PROVIDER=openai
+# OPENAI_API_KEY=sk-...
+# OPENAI_VECTOR_STORE_ID=vs_...

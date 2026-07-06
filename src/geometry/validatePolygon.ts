@@ -27,6 +27,7 @@ export function validatePolygon(
   params: ModelParams,
 ): ValidationResult {
   const messages: string[] = []
+  const warnings: string[] = []
   const usefulUpperWidth =
     geometry.upperFootprint[1]?.x - geometry.upperFootprint[0]?.x || 0
 
@@ -43,7 +44,7 @@ export function validatePolygon(
   }
 
   if (
-    geometry.upperFloors > 0 &&
+    geometry.upperHeight > 0 &&
     usefulUpperWidth < NORMATIVE_RULES.minUsefulUpperWidth
   ) {
     messages.push('El ancho util superior queda por debajo del minimo operativo.')
@@ -61,12 +62,22 @@ export function validatePolygon(
     messages.push('El poligono resultante tiene autointersecciones.')
   }
 
+  if (geometry.lateralOnsetCutsFloor && geometry.lateralTransitionFloor) {
+    warnings.push(
+      `El aislamiento lateral inicia dentro del piso ${geometry.lateralTransitionFloor}; por criterio conservador, el piso completo se modela con aislamiento.`,
+    )
+  }
+
+  const isValid = messages.length === 0
+  const severity = !isValid ? 'error' : warnings.length > 0 ? 'warning' : 'ok'
+  const visibleMessages = [...messages, ...warnings]
+
   return {
-    isValid: messages.length === 0,
-    severity: messages.length === 0 ? 'ok' : 'error',
+    isValid,
+    severity,
     messages:
-      messages.length === 0
+      visibleMessages.length === 0
         ? ['Geometria valida para exploracion preliminar.']
-        : messages,
+        : visibleMessages,
   }
 }
