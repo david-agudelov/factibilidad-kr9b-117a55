@@ -253,28 +253,16 @@ describe('App live calculations UI', () => {
     )
   })
 
-  it('shows the economic dashboard from live model data and updates it with sliders', () => {
+  it('does not show economic viability cards in the modeler front end', () => {
     render(<App />)
 
-    expect(screen.getByText('Viabilidad economica')).toBeInTheDocument()
-    expect(screen.getByText('Lote + utilidad')).toBeInTheDocument()
-    expect(screen.getByText('Conservador')).toBeInTheDocument()
-    expect(screen.getByText('Base')).toBeInTheDocument()
-    expect(screen.getByText('Optimista')).toBeInTheDocument()
-    expect(screen.getByText('Valor residual lote')).toBeInTheDocument()
-    expect(screen.getByText('Delta lote')).toBeInTheDocument()
-    expect(screen.getByText('Retorno inversionista')).toBeInTheDocument()
-
-    const profitBefore = screen.getByTestId('economic-profit').textContent
-    const floors = screen.getByLabelText('Numero de pisos') as HTMLInputElement
-
-    fireEvent.change(floors, { target: { value: '8' } })
-
-    expect(screen.getByTestId('economic-profit').textContent).not.toBe(profitBefore)
-    expect(screen.getByTestId('economic-dashboard')).toHaveAttribute(
-      'data-source',
-      'live-model-snapshot',
-    )
+    expect(screen.queryByText('Viabilidad economica')).not.toBeInTheDocument()
+    expect(screen.queryByText('Lote + utilidad')).not.toBeInTheDocument()
+    expect(screen.queryByText('Valor residual lote')).not.toBeInTheDocument()
+    expect(screen.queryByText('Delta lote')).not.toBeInTheDocument()
+    expect(screen.queryByText('Retorno inversionista')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('economic-dashboard')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('economic-profit')).not.toBeInTheDocument()
   })
 
   it('opens the responsive ECOS explainer with official source links', () => {

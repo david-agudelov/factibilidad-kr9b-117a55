@@ -3,7 +3,6 @@ import { BookOpen, Bot, Calculator, GraduationCap, Map as MapIcon, RotateCcw } f
 import gsap from 'gsap'
 import { MetricsPanel } from './components/MetricsPanel'
 import { EcosExplainerPage } from './components/EcosExplainerPage'
-import { EconomicDashboardPanel } from './components/EconomicDashboardPanel'
 import { FunctionalPanel } from './components/FunctionalPanel'
 import { MapPage } from './components/MapPage'
 import { NormativeChat } from './components/NormativeChat/NormativeChat'
@@ -11,7 +10,6 @@ import { NormativeGuidePage } from './components/NormativeGuidePage'
 import { SliderPanel } from './components/SliderPanel'
 import { ViewportTabs } from './components/ViewportTabs'
 import { envConfig } from './config/env'
-import { buildLiveModelSnapshot } from './finance/liveModelSnapshot'
 import { CASE_INFO } from './model/caseDefaults'
 import { useParametricModel } from './state/useParametricModel'
 
@@ -20,17 +18,6 @@ function App() {
   const headerRef = useRef<HTMLElement>(null)
   const [activePage, setActivePage] = useState<'modeler' | 'ecos' | 'guide' | 'map'>('modeler')
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const liveModelSnapshot = useMemo(
-    () =>
-      buildLiveModelSnapshot({
-        envelope: model.envelope,
-        geometry: model.geometry,
-        metrics: model.metrics,
-        params: model.params,
-        validation: model.validation,
-      }),
-    [model.envelope, model.geometry, model.metrics, model.params, model.validation],
-  )
   const chatParcelContext = useMemo(
     () => ({
       parcelInput: {
@@ -231,7 +218,6 @@ function App() {
           data-testid="right-analysis-column"
         >
           <MetricsPanel metrics={model.metrics} />
-          <EconomicDashboardPanel snapshot={liveModelSnapshot} />
           {isChatOpen ? (
             <div id="normative-chat-drawer">
               <NormativeChat
