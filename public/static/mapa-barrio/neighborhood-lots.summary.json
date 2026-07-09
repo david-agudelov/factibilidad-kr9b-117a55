@@ -1,0 +1,25 @@
+{
+  "totalLots": 859,
+  "lotsWithoutFloors": 97,
+  "widthM": {
+    "min": 3.01,
+    "p10": 10,
+    "median": 16,
+    "p90": 33.2,
+    "max": 446.87
+  },
+  "depthM": {
+    "min": 5,
+    "p10": 25.02,
+    "median": 32.43,
+    "p90": 65.61,
+    "max": 803.45
+  },
+  "floors": {
+    "min": 1,
+    "p10": 2,
+    "median": 4,
+    "p90": 6,
+    "max": 13
+  }
+}

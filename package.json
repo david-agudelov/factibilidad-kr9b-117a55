@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
+    "spatial:build:neighborhood": "node scripts/spatial/buildNeighborhoodHeatmapData.ts",
     "rag:download": "node rag/scripts/downloadSources.ts",
     "rag:prepare:text": "node rag/scripts/prepareTextCorpus.ts",
     "rag:prepare:spatial": "node rag/scripts/prepareSpatialCorpus.ts",

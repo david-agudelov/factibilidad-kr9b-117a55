@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { BookOpen, Bot, Calculator, GraduationCap, Map as MapIcon, RotateCcw } from 'lucide-react'
+import {
+  Activity,
+  BookOpen,
+  Bot,
+  Calculator,
+  GraduationCap,
+  Map as MapIcon,
+  RotateCcw,
+} from 'lucide-react'
 import gsap from 'gsap'
 import { MetricsPanel } from './components/MetricsPanel'
 import { EcosExplainerPage } from './components/EcosExplainerPage'
@@ -8,6 +16,7 @@ import { MapPage } from './components/MapPage'
 import { NormativeChat } from './components/NormativeChat/NormativeChat'
 import { NormativeGuidePage } from './components/NormativeGuidePage'
 import { SliderPanel } from './components/SliderPanel'
+import { SpaceSyntaxHeatmapPage } from './components/SpaceSyntaxHeatmapPage'
 import { ViewportTabs } from './components/ViewportTabs'
 import { envConfig } from './config/env'
 import { CASE_INFO } from './model/caseDefaults'
@@ -16,7 +25,8 @@ import { useParametricModel } from './state/useParametricModel'
 function App() {
   const model = useParametricModel()
   const headerRef = useRef<HTMLElement>(null)
-  const [activePage, setActivePage] = useState<'modeler' | 'ecos' | 'guide' | 'map'>('modeler')
+  const [activePage, setActivePage] =
+    useState<'modeler' | 'ecos' | 'guide' | 'map' | 'syntaxHeatmap'>('modeler')
   const [isChatOpen, setIsChatOpen] = useState(false)
   const chatParcelContext = useMemo(
     () => ({
@@ -151,6 +161,18 @@ function App() {
               </button>
               <button
                 type="button"
+                onClick={() => setActivePage('syntaxHeatmap')}
+                className={`inline-flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded px-2 text-[11px] font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-700 ${
+                  activePage === 'syntaxHeatmap'
+                    ? 'bg-rose-900 text-white'
+                    : 'text-slate-700 hover:bg-white hover:text-rose-900'
+                }`}
+              >
+                <Activity size={14} aria-hidden="true" />
+                Heatmap urbano
+              </button>
+              <button
+                type="button"
                 onClick={() => {
                   setActivePage('modeler')
                   setIsChatOpen((current) => !current)
@@ -184,6 +206,7 @@ function App() {
       {activePage === 'ecos' ? <EcosExplainerPage /> : null}
       {activePage === 'guide' ? <NormativeGuidePage /> : null}
       {activePage === 'map' ? <MapPage /> : null}
+      {activePage === 'syntaxHeatmap' ? <SpaceSyntaxHeatmapPage /> : null}
 
       {activePage === 'modeler' ? (
         <section
