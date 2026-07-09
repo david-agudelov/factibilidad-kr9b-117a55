@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heatmap urbano Space Syntax</title>
+    <link
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        --ink: #111827;
+        --muted: #5b6675;
+        --line: #d9e0e8;
+        --panel: rgba(255, 255, 255, 0.94);
+        --cold: #dce4eb;
+        --yellow: #fee08b;
+        --orange: #f6a545;
+        --red: #d7301f;
+        --deep-red: #7f0026;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body,
+      #map {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+        background: #eef2f5;
+        color: var(--ink);
+      }
+
+      #map {
+        position: absolute;
+        inset: 0;
+      }
+
+      .panel {
+        position: absolute;
+        z-index: 1000;
+        left: 14px;
+        top: 14px;
+        width: min(372px, calc(100vw - 28px));
+        max-height: calc(100dvh - 28px);
+        overflow-y: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 14px 36px rgba(15, 23, 42, 0.18);
+        backdrop-filter: blur(8px);
+      }
+
+      .panel-inner {
+        padding: 14px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.2;
+        letter-spacing: 0;
+      }
+
+      .eyebrow {
+        margin: 0 0 5px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        color: #991b1b;
+      }
+
+      .plain-note {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.42;
+      }
+
+      .mode-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+        margin-top: 13px;
+        padding: 3px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #f3f6f8;
+      }
+
+      .mode-button {
+        min-height: 34px;
+        border: 0;
+        border-radius: 4px;
+        background: transparent;
+        color: #334155;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mode-button[aria-pressed="true"] {
+        background: #111827;
+        color: #fff;
+      }
+
+      .sliders {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .slider {
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .slider-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .value {
+        white-space: nowrap;
+        font-size: 13px;
+        font-weight: 800;
+        color: #991b1b;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        margin: 0;
+        accent-color: #b91c1c;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 14px;
+      }
+
+      .stat {
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.75);
+        padding: 8px 7px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 16px;
+        line-height: 1.1;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .legend {
+        margin-top: 14px;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+      }
+
+      .legend-title {
+        margin: 0 0 8px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .legend-ramp {
+        height: 12px;
+        border: 1px solid rgba(15, 23, 42, 0.18);
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          var(--cold),
+          var(--yellow),
+          var(--orange),
+          var(--red),
+          var(--deep-red)
+        );
+      }
+
+      .legend-labels {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .status {
+        margin-top: 10px;
+        border: 1px solid #fecaca;
+        border-radius: 6px;
+        background: #fff1f2;
+        color: #9f1239;
+        padding: 8px;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .status[hidden] {
+        display: none;
+      }
+
+      .leaflet-control-attribution {
+        font-size: 10px;
+      }
+
+      .lot-popup {
+        min-width: 230px;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .lot-popup strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      .lot-popup dl {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 3px 12px;
+        margin: 8px 0;
+      }
+
+      .lot-popup dt {
+        color: #64748b;
+      }
+
+      .lot-popup dd {
+        margin: 0;
+        font-weight: 700;
+      }
+
+      @media (max-width: 720px) {
+        .panel {
+          top: auto;
+          bottom: 10px;
+          left: 10px;
+          width: calc(100vw - 20px);
+          max-height: min(68dvh, 560px);
+        }
+
+        .panel-inner {
+          padding: 12px;
+        }
+
+        .stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" aria-label="Mapa de heatmap urbano"></div>
+
+    <section class="panel" aria-label="Controles de heatmap urbano">
+      <div class="panel-inner">
+        <p class="eyebrow">Space Syntax preliminar</p>
+        <h1>Heatmap urbano</h1>
+        <p class="plain-note">
+          Rojo marca lotes mas parecidos al objetivo o mejor conectados, segun
+          el modo. Un lote mas grande no sube automaticamente si se aleja del
+          perfil buscado.
+        </p>
+
+        <div class="mode-row" aria-label="Modo de visualizacion">
+          <button class="mode-button" data-mode="combined" type="button">
+            Combinado
+          </button>
+          <button class="mode-button" data-mode="syntax" type="button">
+            Space Syntax
+          </button>
+          <button class="mode-button" data-mode="profile" type="button">
+            Perfil de lote
+          </button>
+        </div>
+
+        <div class="sliders">
+          <div class="slider">
+            <div class="slider-head">
+              <label for="target-width">Ancho objetivo</label>
+              <span class="value" id="target-width-value">13,55 m</span>
+            </div>
+            <input
+              id="target-width"
+              max="45"
+              min="4"
+              step="0.05"
+              type="range"
+              value="13.55"
+            />
+          </div>
+
+          <div class="slider">
+            <div class="slider-head">
+              <label for="target-depth">Fondo objetivo</label>
+              <span class="value" id="target-depth-value">35,0 m</span>
+            </div>
+            <input
+              id="target-depth"
+              max="80"
+              min="10"
+              step="0.5"
+              type="range"
+              value="35"
+            />
+          </div>
+
+          <div class="slider">
+            <div class="slider-head">
+              <label for="target-floors">Pisos objetivo</label>
+              <span class="value" id="target-floors-value">9 pisos</span>
+            </div>
+            <input
+              id="target-floors"
+              max="13"
+              min="1"
+              step="1"
+              type="range"
+              value="9"
+            />
+          </div>
+        </div>
+
+        <div class="stats" aria-label="Conteos del heatmap">
+          <div class="stat">
+            <strong id="count-total">0</strong>
+            <span>Lotes</span>
+          </div>
+          <div class="stat">
+            <strong id="count-hot">0</strong>
+            <span>Muy alto</span>
+          </div>
+          <div class="stat">
+            <strong id="count-warm">0</strong>
+            <span>Alto/medio</span>
+          </div>
+          <div class="stat">
+            <strong id="count-cold">0</strong>
+            <span>Frio</span>
+          </div>
+        </div>
+
+        <div class="legend" aria-label="Leyenda de calor">
+          <p class="legend-title">Frio a caliente</p>
+          <div class="legend-ramp" aria-hidden="true"></div>
+          <div class="legend-labels">
+            <span>Lejos</span>
+            <span>Parcial</span>
+            <span>Muy parecido / central</span>
+          </div>
+        </div>
+
+        <p class="plain-note">
+          La capa Space Syntax es una aproximacion local con centralidad y
+          densidad de corredor; no reemplaza un analisis depthmapX ni una fuente
+          oficial.
+        </p>
+        <p class="status" id="status" hidden></p>
+      </div>
+    </section>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const DATA_URL = "../mapa-barrio/neighborhood-lots.measured.geojson";
+      const COMBINED_SYNTAX_WEIGHT = 0.65;
+      const COMBINED_PROFILE_WEIGHT = 0.35;
+      const COLORS = {
+        veryLow: "#dce4eb",
+        low: "#fee08b",
+        medium: "#f6a545",
+        high: "#d7301f",
+        veryHigh: "#7f0026",
+      };
+      const state = {
+        mode: "combined",
+        targetWidthM: 13.55,
+        targetDepthM: 35,
+        targetFloors: 9,
+      };
+      const controls = {
+        width: document.getElementById("target-width"),
+        depth: document.getElementById("target-depth"),
+        floors: document.getElementById("target-floors"),
+        widthValue: document.getElementById("target-width-value"),
+        depthValue: document.getElementById("target-depth-value"),
+        floorsValue: document.getElementById("target-floors-value"),
+        total: document.getElementById("count-total"),
+        hot: document.getElementById("count-hot"),
+        warm: document.getElementById("count-warm"),
+        cold: document.getElementById("count-cold"),
+        status: document.getElementById("status"),
+        modeButtons: Array.from(document.querySelectorAll(".mode-button")),
+      };
+
+      const map = L.map("map", {
+        preferCanvas: true,
+        zoomControl: false,
+      });
+      L.control.zoom({ position: "bottomright" }).addTo(map);
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          maxZoom: 20,
+          attribution:
+            '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        },
+      ).addTo(map);
+
+      let lotLayer = null;
+
+      fetch(DATA_URL)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("No se pudo cargar la capa de lotes medidos.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          lotLayer = L.geoJSON(data, {
+            style: (feature) => styleFeature(feature),
+            onEachFeature: (feature, layer) => {
+              layer.bindPopup(() => popupHtml(feature.properties || {}));
+              layer.on("mouseover", () => layer.setStyle(hoverStyle(feature)));
+              layer.on("mouseout", () => layer.setStyle(styleFeature(feature)));
+            },
+          }).addTo(map);
+
+          if (lotLayer.getBounds().isValid()) {
+            map.fitBounds(lotLayer.getBounds(), { padding: [28, 28] });
+          }
+          updateView();
+        })
+        .catch((error) => {
+          controls.status.textContent = error.message;
+          controls.status.hidden = false;
+        });
+
+      controls.width.addEventListener("input", () => {
+        state.targetWidthM = Number(controls.width.value);
+        updateView();
+      });
+      controls.depth.addEventListener("input", () => {
+        state.targetDepthM = Number(controls.depth.value);
+        updateView();
+      });
+      controls.floors.addEventListener("input", () => {
+        state.targetFloors = Math.round(Number(controls.floors.value));
+        updateView();
+      });
+      controls.modeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          state.mode = button.dataset.mode;
+          updateView();
+        });
+      });
+
+      function updateView() {
+        controls.widthValue.textContent = `${formatNumber(state.targetWidthM, 2)} m`;
+        controls.depthValue.textContent = `${formatNumber(state.targetDepthM, 1)} m`;
+        controls.floorsValue.textContent = `${state.targetFloors} pisos`;
+        controls.modeButtons.forEach((button) => {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.mode === state.mode),
+          );
+        });
+
+        if (!lotLayer) return;
+
+        const counts = { total: 0, hot: 0, warm: 0, cold: 0 };
+        lotLayer.eachLayer((layer) => {
+          const feature = layer.feature;
+          const score = computeUrbanScore(feature.properties || {});
+          counts.total += 1;
+          if (score.finalScore >= 60) counts.hot += 1;
+          else if (score.finalScore >= 35) counts.warm += 1;
+          else counts.cold += 1;
+          layer.setStyle(styleFeature(feature));
+        });
+        controls.total.textContent = counts.total;
+        controls.hot.textContent = counts.hot;
+        controls.warm.textContent = counts.warm;
+        controls.cold.textContent = counts.cold;
+      }
+
+      function styleFeature(feature) {
+        const props = feature.properties || {};
+        const score = computeUrbanScore(props);
+        const isStudyLot = Boolean(props.isStudyLot);
+
+        return {
+          color: isStudyLot ? "#dc2626" : "#5b6470",
+          fillColor: colorForScore(score.finalScore),
+          fillOpacity: isStudyLot ? 0.86 : 0.76,
+          opacity: 1,
+          weight: isStudyLot ? 3 : 0.55,
+        };
+      }
+
+      function hoverStyle(feature) {
+        const next = styleFeature(feature);
+        return {
+          ...next,
+          fillOpacity: 0.93,
+          weight: next.weight + 1.1,
+        };
+      }
+
+      function computeUrbanScore(props) {
+        const profileScore = profileSimilarityScore(props);
+        const spaceSyntaxScore = clampScore(props.spaceSyntaxScore);
+        const combinedScore = Math.round(
+          spaceSyntaxScore * COMBINED_SYNTAX_WEIGHT +
+            profileScore * COMBINED_PROFILE_WEIGHT,
+        );
+        const finalScore =
+          state.mode === "syntax"
+            ? spaceSyntaxScore
+            : state.mode === "profile"
+              ? profileScore
+              : combinedScore;
+
+        return {
+          finalScore,
+          profileScore,
+          spaceSyntaxScore,
+          combinedScore,
+        };
+      }
+
+      function profileSimilarityScore(props) {
+        const width = Number(props.widthM);
+        const depth = Number(props.depthM);
+        const floors = nullableNumber(props.registeredFloors);
+        const widthScore = similarityScore(width, state.targetWidthM, 0.1);
+        const depthScore = similarityScore(depth, state.targetDepthM, 0.12);
+        const floorScore =
+          floors === null
+            ? 0
+            : similarityScore(floors, state.targetFloors, 0.18);
+        let score = Math.round(
+          (widthScore * 0.35 + depthScore * 0.35 + floorScore * 0.3) * 100,
+        );
+        if (floors === null) score = Math.min(score, 39);
+
+        return clampScore(score);
+      }
+
+      function similarityScore(value, target, tolerance) {
+        if (!Number.isFinite(value) || !Number.isFinite(target) || target <= 0) {
+          return 0;
+        }
+        const relativeDifference = Math.abs(value - target) / target;
+        return Math.exp(-((relativeDifference / tolerance) ** 2));
+      }
+
+      function colorForScore(score) {
+        if (score >= 78) return COLORS.veryHigh;
+        if (score >= 60) return COLORS.high;
+        if (score >= 45) return COLORS.medium;
+        if (score >= 30) return COLORS.low;
+        return COLORS.veryLow;
+      }
+
+      function popupHtml(props) {
+        const score = computeUrbanScore(props);
+        const floors =
+          nullableNumber(props.registeredFloors) === null
+            ? "Sin dato"
+            : String(props.registeredFloors);
+
+        return `
+          <div class="lot-popup">
+            <strong>${escapeHtml(props.address || "Sin direccion")}</strong>
+            <div>Lote ${escapeHtml(props.lotCode || "")}</div>
+            <dl>
+              <dt>Ancho aprox.</dt><dd>${formatNumber(Number(props.widthM), 2)} m</dd>
+              <dt>Fondo aprox.</dt><dd>${formatNumber(Number(props.depthM), 2)} m</dd>
+              <dt>Pisos</dt><dd>${escapeHtml(floors)}</dd>
+              <dt>Space Syntax</dt><dd>${score.spaceSyntaxScore}/100</dd>
+              <dt>Perfil</dt><dd>${score.profileScore}/100</dd>
+              <dt>Combinado</dt><dd>${score.combinedScore}/100</dd>
+            </dl>
+            <div>${explanationForScore(score)}</div>
+          </div>
+        `;
+      }
+
+      function explanationForScore(score) {
+        if (state.mode === "syntax") {
+          return score.spaceSyntaxScore >= 70
+            ? "Alta accesibilidad urbana preliminar."
+            : "Accesibilidad urbana preliminar media o baja.";
+        }
+        if (state.mode === "profile") {
+          return score.profileScore >= 80
+            ? "Muy parecido al perfil objetivo."
+            : "Se enfria por diferencia frente al perfil objetivo.";
+        }
+        return "Combinado: 65% accesibilidad urbana y 35% parecido al perfil.";
+      }
+
+      function nullableNumber(value) {
+        if (value === null || value === undefined || value === "") return null;
+        const numericValue = Number(value);
+        return Number.isFinite(numericValue) ? numericValue : null;
+      }
+
+      function clampScore(value) {
+        const numericValue = Number(value);
+        if (!Number.isFinite(numericValue)) return 0;
+        return Math.round(Math.min(Math.max(numericValue, 0), 100));
+      }
+
+      function formatNumber(value, digits) {
+        const numericValue = Number(value);
+        if (!Number.isFinite(numericValue)) return "0";
+        return numericValue.toLocaleString("es-CO", {
+          maximumFractionDigits: digits,
+          minimumFractionDigits: digits,
+        });
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+    </script>
+  </body>
+</html>

@@ -316,17 +316,26 @@ describe('App live calculations UI', () => {
     )
   })
 
-  it('opens the deploy-ready neighborhood map inside the app', () => {
+  it('keeps Mapa barrio as the original static neighborhood iframe', () => {
     render(<App />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Mapa barrio' }))
 
-    const mapFrame = screen.getByTitle('Mapa barrio Santa Barbara Central')
-    expect(mapFrame).toBeInTheDocument()
-    expect(mapFrame).toHaveAttribute(
-      'src',
-      expect.stringContaining('/static/mapa-barrio/index.html'),
-    )
+    const iframe = screen.getByTitle('Mapa barrio Santa Barbara Central') as HTMLIFrameElement
+    expect(iframe).toBeInTheDocument()
+    expect(iframe.src).toContain('/static/mapa-barrio/index.html')
+    expect(screen.queryByTitle('Heatmap urbano Space Syntax')).not.toBeInTheDocument()
+  })
+
+  it('opens Heatmap urbano as a separate Space Syntax tab', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Heatmap urbano' }))
+
+    const iframe = screen.getByTitle('Heatmap urbano Space Syntax') as HTMLIFrameElement
+    expect(iframe).toBeInTheDocument()
+    expect(iframe.src).toContain('/static/space-syntax-heatmap/index.html')
+    expect(screen.queryByTitle('Mapa barrio Santa Barbara Central')).not.toBeInTheDocument()
   })
 
   it('opens the normative consultation panel without exposing frontend secrets', async () => {
